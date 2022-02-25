@@ -22,9 +22,11 @@ export const client = new Client({
   // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
 });
 
+
 client.once("ready", async () => {
   // make sure all guilds are in cache
   await client.guilds.fetch();
+  client.user?.setActivity({ type: 2, name: '128.500 MHz' });
 
   // init all application commands
   await client.initApplicationCommands({
