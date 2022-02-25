@@ -1,12 +1,15 @@
-import "reflect-metadata";
-import { Intents, Interaction, Message } from "discord.js";
-import { Client } from "discordx";
 import { dirname, importx } from "@discordx/importer";
 import { Koa } from "@discordx/koa";
+import { Intents, Interaction, Message } from "discord.js";
+import { Client } from "discordx";
+import dotenv from "dotenv";
+import "reflect-metadata";
+
+dotenv.config();
 
 export const client = new Client({
   simpleCommand: {
-    prefix: "!",
+    prefix: "?",
   },
   intents: [
     Intents.FLAGS.GUILDS,
@@ -16,7 +19,7 @@ export const client = new Client({
     Intents.FLAGS.GUILD_VOICE_STATES,
   ],
   // If you only want to use global commands only, comment this line
-  botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
+  // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
 });
 
 client.once("ready", async () => {
@@ -50,9 +53,6 @@ client.on("messageCreate", (message: Message) => {
 });
 
 async function run() {
-  // with cjs
-  // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
-  // with ems
   await importx(
     dirname(import.meta.url) + "/{events,commands,api}/**/*.{ts,js}"
   );
