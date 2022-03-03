@@ -19,11 +19,11 @@ export abstract class Tailwind {
 
     interaction: CommandInteraction
   ): Promise<void> {
-    const airportInfoURL = constants.AIRPORT_INFO_API_URL;
-    const metarURL = constants.METAR_API_URL;
+    const airportInfoURL = constants.AVWX.URLS.AIRPORT_INFO;
+    const metarURL = constants.AVWX.URLS.METAR;
 
     axios
-      .get(airportInfoURL + ident, constants.AVWX_HEADERS)
+      .get(airportInfoURL + ident, constants.AVWX.HEADERS)
       .then((airportData: any) => {
         if (!airportData.data && airportData.status !== 200)
           throw Error(`Could not retrieve ${ident} airport information.`);
@@ -52,7 +52,7 @@ export abstract class Tailwind {
           );
 
         axios
-          .get(metarURL + ident, constants.AVWX_HEADERS)
+          .get(metarURL + ident, constants.AVWX.HEADERS)
           .then((metarData: any) => {
             if (!metarData.data || airportData.status !== 200)
               throw Error(`Could not retrieve METAR for ${ident}.`);
@@ -74,7 +74,7 @@ export abstract class Tailwind {
                     description: message,
                     footer: {
                       text: "Fetched from AVWX",
-                      iconURL: constants.AVWX_ICON_URL,
+                      iconURL: constants.AVWX.URLS.ICON,
                     },
                   }),
                 ],
@@ -93,7 +93,7 @@ export abstract class Tailwind {
                     description: `Wind is ${metar.wind_direction.repr} at ${windSpeed} ${metar.units.wind_speed}.`,
                     footer: {
                       text: `Fetched from AVWX`,
-                      iconURL: constants.AVWX_ICON_URL,
+                      iconURL: constants.AVWX.URLS.ICON,
                     },
                   }),
                 ],
@@ -107,7 +107,7 @@ export abstract class Tailwind {
                     description: `Wind is ${metar.wind_direction.repr} at ${windSpeed} ${metar.units.wind_speed}.`,
                     footer: {
                       text: `Fetched from AVWX`,
-                      iconURL: constants.AVWX_ICON_URL,
+                      iconURL: constants.AVWX.URLS.ICON,
                     },
                   }).addField(`Tailwind`, `${tailwindComponent}${metar.units.wind_speed}`),
                 ],

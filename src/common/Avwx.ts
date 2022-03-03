@@ -2,6 +2,7 @@ import axios from "axios";
 import { CommandInteraction } from "discord.js";
 import { Airport } from "../models/airport.model";
 import { Metar } from "../models/metar.model";
+import { Taf } from "../models/taf.model";
 import { Api } from "./Api.js";
 import { constants, handleError } from "./utils.js";
 
@@ -14,8 +15,8 @@ export default class Avwx {
    * @returns `Promise<Airport|undefined>` Airport object or undefined if not found.
    */
      static async info(ident: string, interaction: CommandInteraction): Promise<Airport | undefined> {
-      const url = `${constants.AIRPORT_INFO_API_URL}${ident}`;
-      const response = await Api.get(url, constants.AVWX_HEADERS);
+      const url = `${constants.AVWX.URLS.AIRPORT_INFO}${ident}`;
+      const response = await Api.get(url, constants.AVWX.HEADERS);
 
       if (response.status !== 200) {
         throw new Error(`Could not retrieve ${ident.toUpperCase()} information.`);
@@ -33,8 +34,8 @@ export default class Avwx {
    * @returns `Promise<Metar|undefined>` METAR object or undefied if not found.
    */
   static async metar(ident: string): Promise<Metar | undefined> {
-    const url = `${constants.METAR_API_URL}${ident}`;
-    const response = await Api.get(url, constants.AVWX_HEADERS);
+    const url = `${constants.AVWX.URLS.METAR}${ident}`;
+    const response = await Api.get(url, constants.AVWX.HEADERS);
 
     if (response.status !== 200) {
       throw new Error(`Could not retrieve ${ident.toUpperCase()} METAR.`);
@@ -46,14 +47,15 @@ export default class Avwx {
   }
 
   static async taf(ident: string, interaction: CommandInteraction): Promise<any | undefined> {
-    let data;
-    try {
-      data = await axios.get(constants.AIRPORT_INFO_API_URL, constants.AVWX_HEADERS)
-    } catch (err) {
-      handleError(err, interaction);
-      return;
+    const url = `${constants.AVWX.URLS.TAF}${ident}`;
+    const response = await Api.get(url, constants.AVWX.HEADERS);
+
+    if (response.status !== 200) {
+      throw new Error(`Could not retrieve ${ident.toUpperCase()} TAF.`);
     }
 
-    return data?.data;
+    if (response.data) {
+      return response.data as Taf;
+    }
   }
 }

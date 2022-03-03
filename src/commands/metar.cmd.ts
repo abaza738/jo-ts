@@ -1,8 +1,8 @@
 import { CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import Avwx from "../common/Avwx.js";
-import { decodeMetar } from "../common/decode_metar.js";
-import { embedFactory, handleError } from "../common/utils.js";
+import { decodeMetar } from "../common/decode-metar.js";
+import { constants, embedFactory, handleError } from "../common/utils.js";
 import { Airport } from "../models/airport.model.js";
 import { Metar } from "../models/metar.model.js";
 
@@ -21,8 +21,7 @@ export abstract class MetarCommand {
     let airport: Airport | undefined, metar: Metar | undefined;
 
     try {
-      airport = await Avwx.info(ident, interaction);
-      metar = await Avwx.metar(ident);
+      [airport, metar] = await Promise.all([Avwx.info(ident, interaction), Avwx.metar(ident)]);
     } catch (err) {
       handleError(err, interaction);
       return;
@@ -38,7 +37,7 @@ export abstract class MetarCommand {
       title: `${ident.toUpperCase()} METAR`,
       footer: {
         text: `Fetched from AVWX`,
-        iconURL: "https://avwx.rest/static/favicons/apple-touch-icon.png",
+        iconURL: constants.AVWX.URLS.ICON,
       },
     }).addField(
       airport.name,
@@ -48,7 +47,7 @@ export abstract class MetarCommand {
 
     embed.addField(
       "Decoded",
-      decodeMetar(metar).replace(/^\s*$(?:\r\n?|\n)/gm, "")
+      decodeMetar(metar)
     );
 
     if (metar.remarks_info?.codes?.length) {

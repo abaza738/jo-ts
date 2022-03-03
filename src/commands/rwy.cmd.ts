@@ -34,9 +34,9 @@ export abstract class ActiveRWY {
     icao: string,
     interaction: CommandInteraction
   ): Promise<void> {
-    const url = `${constants.AIRPORT_INFO_API_URL}${icao}`;
+    const url = `${constants.AVWX.URLS.AIRPORT_INFO}${icao}`;
     axios
-      .get(url, constants.AVWX_HEADERS)
+      .get(url, constants.AVWX.HEADERS)
       .then((airportData: any) => {
         const runways = airportData.data?.runways;
         if (!runways) {
@@ -46,7 +46,7 @@ export abstract class ActiveRWY {
           return;
         }
         axios
-          .get(`${constants.METAR_API_URL}${icao}`, constants.AVWX_HEADERS)
+          .get(`${constants.AVWX.URLS.METAR}${icao}`, constants.AVWX.HEADERS)
           .then((metar: any) => {
             metar = metar.data;
             if (!metar)
@@ -62,7 +62,7 @@ export abstract class ActiveRWY {
                     description: `Wind is relatively calm, nothing much to say about active runways.`,
                     footer: {
                       text: "Fetched from AVWX",
-                      iconURL: constants.AVWX_ICON_URL,
+                      iconURL: constants.AVWX.URLS.ICON,
                     },
                   }).addField(
                     "Reported Wind",
@@ -83,7 +83,7 @@ export abstract class ActiveRWY {
                 description: `**${pref.join(", ")}**`,
                 footer: {
                   text: "Fetched from AVWX. Calculation does not take into account local SOP",
-                  iconURL: constants.AVWX_ICON_URL,
+                  iconURL: constants.AVWX.URLS.ICON,
                 },
               }).addField(
                 "Current Wind",

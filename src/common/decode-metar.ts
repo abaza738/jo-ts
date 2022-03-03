@@ -1,7 +1,7 @@
 import moment from "moment";
 import { Metar } from "../models/metar.model";
 
-export function decodeMetar(metar: Metar) {
+export function decodeMetar(metar: Metar): string {
   let metarDecoded = `**Report time**: ${moment(metar.time.dt)
     .utc()
     .format("HH:mm")} UTC
@@ -46,15 +46,15 @@ export function decodeMetar(metar: Metar) {
 
   metarDecoded += `**Temparature**: ${
     metar.temperature.value
-  }° ${metar.units.temperature.toUpperCase()}
+  }° ${metar.units.temperature?.toUpperCase()}
           **Dew Point**: ${
             metar.dewpoint?.value
-          }° ${metar.units.temperature.toUpperCase()}
+          }° ${metar.units.temperature?.toUpperCase()}
           **Pressure**: ${metar.altimeter.value} ${metar.units.altimeter}\n`;
 
   if (metar.remarks) {
     metarDecoded += `**Remarks**: \`${metar.remarks}\``;
   }
 
-  return metarDecoded;
+  return metarDecoded.replace(/^\s*$(?:\r\n?|\n)/gm, "");
 }
