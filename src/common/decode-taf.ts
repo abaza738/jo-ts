@@ -11,7 +11,7 @@ export function decodeTaf(taf: Taf): EmbedFieldData[] {
       ...taf.forecast.map((forecast: Forecast) => {
         
         return {
-          name: `${forecast.type} | ${formatTime(forecast.start_time?.dt!)}Z → ${formatTime(forecast.end_time?.dt!)}Z`,
+          name: `${forecast.type}`,
           value: extractForecastValue(taf, forecast)
         }
       })
@@ -26,18 +26,18 @@ function formatTime(dt: string): string {
 }
 
 function extractForecastValue(taf: Taf, forecast: Forecast): string {
-  let decoded = "";
+  let decoded = `${formatTime(forecast.start_time?.dt!)}Z → ${formatTime(forecast.end_time?.dt!)}Z\n`;
 
   if (forecast.probability) {
-    decoded += `Probability of percipitation: ${forecast.probability.repr}\n`;
+    decoded += `Probability of percipitation: ${forecast.probability.repr}%\n`;
   }
 
   if (forecast.wind_direction && forecast.wind_speed) {
-    decoded += `Wind ${forecast.wind_direction.repr} at ${forecast.wind_speed.repr} ${taf.units.wind_speed}\n`;
+    decoded += `Wind ${forecast.wind_direction.repr} at ${forecast.wind_speed.value}${taf.units.wind_speed}\n`;
   }
 
   if (forecast.visibility) {
-    decoded += `Visibility: ${forecast.visibility.repr} ${taf.units.visibility}\n`;
+    decoded += `Visibility: ${forecast.visibility.value}${taf.units.visibility}\n`;
   }
 
   if (forecast.wx_codes?.length) {
