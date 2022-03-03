@@ -16,14 +16,19 @@ interface EmbedOptions {
 
 export const constants = {
   DISCORD_CDN_AVATAR_URL: "https://cdn.discordapp.com/avatars",
-  AIRPORT_INFO_API_URL: "https://avwx.rest/api/station/",
-  METAR_API_URL: "https://avwx.rest/api/metar/",
-  AVWX_ICON_URL: "https://avwx.rest/static/favicons/apple-touch-icon.png",
-  AVWX_HEADERS: {
-    params: {
-      token: process.env.AVWX_TOKEN,
+  AVWX: {
+    URLS: {
+      AIRPORT_INFO: "https://avwx.rest/api/station/",
+      METAR: "https://avwx.rest/api/metar/",
+      TAF: "https://avwx.rest/api/taf/",
+      ICON: "https://avwx.rest/static/favicons/apple-touch-icon.png",
     },
-  },
+    HEADERS: {
+      params: {
+        token: process.env.AVWX_TOKEN,
+      },
+    }
+  }
 };
 
 export function generateEmbedAuthor(
