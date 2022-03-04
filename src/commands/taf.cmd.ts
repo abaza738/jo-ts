@@ -22,7 +22,7 @@ export abstract class TafCommand {
     let airport: Airport | undefined, taf: Taf | undefined;
 
     try {
-      [airport, taf] = await Promise.all([Avwx.info(ident, interaction), Avwx.taf(ident, interaction)]);
+      [airport, taf] = await Promise.all([Avwx.info(ident), Avwx.taf(ident)]);
     } catch (err) {
       handleError(err, interaction);
       return;
