@@ -21,7 +21,7 @@ export abstract class MetarCommand {
     let airport: Airport | undefined, metar: Metar | undefined;
 
     try {
-      [airport, metar] = await Promise.all([Avwx.info(ident, interaction), Avwx.metar(ident)]);
+      [airport, metar] = await Promise.all([Avwx.info(ident), Avwx.metar(ident)]);
     } catch (err) {
       handleError(err, interaction);
       return;

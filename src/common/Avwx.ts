@@ -14,7 +14,7 @@ export default class Avwx {
    * @param {CommandInteraction} interaction - Command Interaction for replying
    * @returns `Promise<Airport|undefined>` Airport object or undefined if not found.
    */
-     static async info(ident: string, interaction: CommandInteraction): Promise<Airport | undefined> {
+     static async info(ident: string): Promise<Airport | undefined> {
       const url = `${constants.AVWX.URLS.AIRPORT_INFO}${ident}`;
       const response = await Api.get(url, constants.AVWX.HEADERS);
 
