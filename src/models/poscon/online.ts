@@ -109,21 +109,21 @@ export interface FlightPlan {
   updated?: string;
   std?: string;
   sta?: string;
-  ac_type?: string;
+  ac_type: string;
   altnt?: string;
   altnt2?: string;
-  callsign?: string;
-  cruise_spd?: string;
-  dof?: string;
-  dep?: string;
-  dep_time?: string;
-  dest?: string;
+  callsign: string;
+  cruise_spd: string;
+  dof: string;
+  dep: string;
+  dep_time: string;
+  dest: string;
   eet?: string;
   endurance?: string;
   equip_code?: string;
   rules?: string;
-  type?: string;
-  cruise?: string;
+  type: string;
+  cruise: string;
   other?: string;
   pbn?: string;
   perf_cat?: string;
@@ -131,9 +131,9 @@ export interface FlightPlan {
   remarks?: string;
   route?: string;
   ssr?: string;
-  wake_turb?: string;
+  wake_turb: string;
   operator?: string;
-  user_id?: string;
+  user_id: string;
 }
 
 export enum PositionType {

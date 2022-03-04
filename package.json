@@ -1,7 +1,7 @@
 {
-  "name": "discord.ts-example",
-  "version": "1.0.2",
-  "description": "discordx bot example",
+  "name": "jo-ts",
+  "version": "1.0.3",
+  "description": "Discord bot with typescript for Jodanian Aviators Discord.",
   "keywords": [
     "discordx",
     "discord.ts",
@@ -10,19 +10,15 @@
     "discord",
     "typescript"
   ],
-  "homepage": "https://github.com/oceanroleplay/discord.ts-example#readme",
   "bugs": {
-    "url": "https://github.com/oceanroleplay/discord.ts-example/issues"
+    "url": "https://github.com/abaza738/jo-ts/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oceanroleplay/discord.ts-example.git"
+    "url": "https://github.com/abaza738/jo-ts"
   },
   "license": "MIT",
-  "author": "Indian Ocean Roleplay",
-  "contributors": [
-    "Harry <indianoceanroleplay@gmail.com> (https://github.com/oceanroleplay)"
-  ],
+  "author": "Maher Abaza",
   "type": "module",
   "main": "build/main.js",
   "scripts": {
