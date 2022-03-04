@@ -28,6 +28,13 @@ export const constants = {
         token: process.env.AVWX_TOKEN,
       },
     }
+  },
+  POSCON: {
+    API: {
+      ONLINE: "https://hqapi.poscon.net/online.json"
+    },
+    COLOR: "#1e1933" as ColorResolvable,
+    LOGO: "https://i.imgur.com/oUxG3F8.png"
   }
 };
 
