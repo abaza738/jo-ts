@@ -46,7 +46,7 @@ export default class Avwx {
     }
   }
 
-  static async taf(ident: string, interaction: CommandInteraction): Promise<any | undefined> {
+  static async taf(ident: string): Promise<any | undefined> {
     const url = `${constants.AVWX.URLS.TAF}${ident}`;
     const response = await Api.get(url, constants.AVWX.HEADERS);
 
