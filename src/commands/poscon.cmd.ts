@@ -105,7 +105,7 @@ export abstract class POSCONCommand {
       .addField(
         "Time",
         `Scheduled Time of Departure ${toZuluTime(selectedFlight.flightplan.std!)}
-        ${ selectedFlight.flightplan.dep_time ? `Actual Time of Departure ${selectedFlight.flightplan.dep_time}Z` : ''}
+        ${ selectedFlight.flightplan.atd ? `Actual Time of Departure ${toZuluTime(selectedFlight.flightplan.atd)}` : ''}
         Estimed time enroute ${selectedFlight.flightplan.eet}.
         Scheduled Time of Arrival ${toZuluTime(selectedFlight.flightplan.sta!)}`
       )

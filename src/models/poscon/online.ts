@@ -109,6 +109,7 @@ export interface FlightPlan {
   updated?: string;
   std?: string;
   sta?: string;
+  atd?: string;
   ac_type: string;
   altnt?: string;
   altnt2?: string;
