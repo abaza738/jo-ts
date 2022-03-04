@@ -1,11 +1,9 @@
-import moment from "moment";
 import { Metar } from "../models/metar.model";
+import { toZuluTime } from "./utils.js";
 
 export function decodeMetar(metar: Metar): string {
-  let metarDecoded = `**Report time**: ${moment(metar.time.dt)
-    .utc()
-    .format("HH:mm")} UTC
-          **Wind**: ${metar.wind_direction.repr}° at ${
+  let metarDecoded = `**Report time**: ${toZuluTime(metar.time.dt)}
+  **Wind**: ${metar.wind_direction.repr}° at ${
     metar.wind_speed.value
   } ${metar.units.wind_speed}.${
     metar.wind_variable_direction?.length
