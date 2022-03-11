@@ -1,1 +1,1 @@
-worker: node build/main.js
+worker: node --experimental-json-modules build/main.js
