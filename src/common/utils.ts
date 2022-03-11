@@ -11,6 +11,7 @@ import moment from "moment";
 import { Airport } from "../models/airport.model.js";
 import { AircraftPosition, Flight } from "../models/poscon/online.js";
 import Avwx from "./Avwx.js";
+import { constants } from "./constants.js";
 import POSCON from "./POSCON.js";
 
 interface EmbedOptions {
@@ -20,31 +21,6 @@ interface EmbedOptions {
   color?: ColorResolvable;
   footer?: EmbedFooterData;
 }
-
-export const constants = {
-  DISCORD_CDN_AVATAR_URL: "https://cdn.discordapp.com/avatars",
-  AVWX: {
-    URLS: {
-      AIRPORT_INFO: "https://avwx.rest/api/station/",
-      METAR: "https://avwx.rest/api/metar/",
-      TAF: "https://avwx.rest/api/taf/",
-      ICON: "https://avwx.rest/static/favicons/apple-touch-icon.png",
-    },
-    HEADERS: {
-      params: {
-        token: process.env.AVWX_TOKEN,
-      },
-    }
-  },
-  POSCON: {
-    URLS: {
-      PROFILE: "https://hq.poscon.net/profile/",
-      ONLINE: "https://hqapi.poscon.net/online.json"
-    },
-    COLOR: "#1e1933" as ColorResolvable,
-    LOGO: "https://i.imgur.com/oUxG3F8.png"
-  }
-};
 
 export function generateEmbedAuthor(
   interaction: CommandInteraction

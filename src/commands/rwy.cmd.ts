@@ -1,7 +1,8 @@
 import axios from "axios";
 import { CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
-import { constants, embedFactory, handleError } from "../common/utils.js";
+import { constants } from "../common/constants.js";
+import { embedFactory, handleError } from "../common/utils.js";
 
 function getActiveRunways(runways: any[], windDirection: number) {
   const result = [];

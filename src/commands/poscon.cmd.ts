@@ -1,8 +1,9 @@
 import { AutocompleteInteraction, CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashGroup, SlashOption } from "discordx";
 import moment from "moment";
+import { constants } from "../common/constants.js";
 import POSCON from "../common/POSCON.js";
-import { constants, embedFactory, flightStatus, getAutocompleteOptions, handleError, KHzToMHz, toZuluTime } from "../common/utils.js";
+import { embedFactory, flightStatus, getAutocompleteOptions, handleError, KHzToMHz, toZuluTime } from "../common/utils.js";
 import { POSCONOnline } from "../models/poscon/online.js";
 
 @Discord()

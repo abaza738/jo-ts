@@ -2,8 +2,9 @@ import { CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import moment from "moment";
 import Avwx from "../common/Avwx.js";
+import { constants } from "../common/constants.js";
 import { decodeTaf } from "../common/decode-taf.js";
-import { constants, embedFactory, handleError } from "../common/utils.js";
+import { embedFactory, handleError } from "../common/utils.js";
 import { Airport } from "../models/airport.model.js";
 import { Taf } from "../models/taf.model.js";
 

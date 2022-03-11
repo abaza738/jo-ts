@@ -1,10 +1,8 @@
-import axios from "axios";
-import { CommandInteraction } from "discord.js";
 import { Airport } from "../models/airport.model";
 import { Metar } from "../models/metar.model";
 import { Taf } from "../models/taf.model";
 import { Api } from "./Api.js";
-import { constants, handleError } from "./utils.js";
+import { constants } from "./constants.js";
 
 export default class Avwx {
 
