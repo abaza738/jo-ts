@@ -1,6 +1,6 @@
 import { POSCONOnline } from "../models/poscon/online";
 import { Api } from "./Api.js"
-import { constants } from "./utils.js"
+import { constants } from "./constants.js";
 
 const CACHE_TIMEOUT = 5 * 60;
 

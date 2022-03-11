@@ -1,6 +1,6 @@
 {
   "name": "jo-ts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Discord bot with typescript for Jodanian Aviators Discord.",
   "keywords": [
     "discordx",
@@ -8,7 +8,14 @@
     "discord.js",
     "bot",
     "discord",
-    "typescript"
+    "typescript",
+    "aviation",
+    "flight sim",
+    "poscon",
+    "vatsim",
+    "flight",
+    "simulation",
+    "network"
   ],
   "bugs": {
     "url": "https://github.com/abaza738/jo-ts/issues"
@@ -24,9 +31,9 @@
   "scripts": {
     "build": "tsc",
     "build:changelog": "npx @discordx/changelog --root=src",
-    "dev": "node --loader ts-node/esm/transpile-only src/main.ts",
-    "start": "nodemon --exec node --loader ts-node/esm/transpile-only src/main.ts",
-    "serve": "node build/main.js"
+    "dev": "node --loader ts-node/esm/transpile-only --experimental-json-modules src/main.ts",
+    "start": "nodemon --exec node --loader ts-node/esm/transpile-only --experimental-json-modules src/main.ts",
+    "serve": "node --experimental-json-modules build/main.js"
   },
   "dependencies": {
     "@discordjs/opus": "^0.5.0",

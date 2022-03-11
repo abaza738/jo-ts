@@ -1,8 +1,9 @@
 import axios from "axios";
 import { CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
+import { constants } from "../common/constants.js";
 import calculateTailwind from "../common/tailwind.script.js";
-import { constants, embedFactory, handleError } from "../common/utils.js";
+import { embedFactory, handleError } from "../common/utils.js";
 
 @Discord()
 export abstract class Tailwind {
