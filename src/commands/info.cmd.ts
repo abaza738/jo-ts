@@ -29,7 +29,7 @@ export abstract class Info {
     .addField(`Servers`, `${interaction.client.guilds.cache.size}`, true)
     .addField(`Up Time`, `${moment.duration(interaction.client.uptime, "milliseconds").humanize()}`, true)
     .addField(`Members`, `${interaction.client.guilds.cache.reduce((acc: number, value) => acc + value.memberCount, 0)}`, true)
-    .addField(`Invite`, `[Invite Jo Bot to your server!](https://discord.com/api/oauth2/authorize?client_id=946866698642935809&permissions=8&scope=bot%20applications.commands)`, true)
+    .addField(`Invite`, `[Invite Jo Bot to your server!](https://ptb.discord.com/api/oauth2/authorize?client_id=781557275235188766&permissions=8&scope=bot%20applications.commands)`, true)
     .addField(`Contribute`, `Submit issues and contribute to the bot's developmen on [GitHub](${pkg.repository.url})!`)
     .addField(`Version`, `${pkg.version}`)
     .setFooter({ text: `Made by ${pkg.author}`, iconURL: `https://webstockreview.net/images/github-icon-png-8.png` });
