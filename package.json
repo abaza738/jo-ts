@@ -40,7 +40,7 @@
     "@discordjs/voice": "^0.9.0",
     "@discordx/importer": "^1.1.2",
     "@discordx/koa": "^1.0.6",
-    "@discordx/music": "^3.1.9",
+    "@discordx/music": "^4.0.1",
     "@discordx/pagination": "^2.0.0",
     "@discordx/utilities": "^4.2.4",
     "@koa/router": "^10.1.1",
