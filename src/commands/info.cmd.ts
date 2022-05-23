@@ -18,7 +18,7 @@ export abstract class Info {
         url: "https://github.com/abaza738/jo-ts"
       },
       author: "Maher Abaza",
-      version: "1.0.5"
+      version: "1.0.6"
     };
 
     const embed = embedFactory({

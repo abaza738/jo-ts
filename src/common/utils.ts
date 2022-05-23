@@ -1,5 +1,5 @@
 import {
-  ApplicationCommandOptionChoice,
+  ApplicationCommandOptionChoiceData,
   AutocompleteInteraction,
   ColorResolvable,
   CommandInteraction,
@@ -65,7 +65,7 @@ export function toZuluTime(time: string): string {
 
 export async function getAutocompleteOptions(interaction: AutocompleteInteraction<import("discord.js").CacheType>): Promise<void> {
   const focusedOption = interaction.options.getFocused(true);
-  const filteredList: ApplicationCommandOptionChoice[] = [];
+  const filteredList: ApplicationCommandOptionChoiceData[] = [];
   const listOfFlights = await POSCON.online();
   for (const flight of listOfFlights?.flights!) {
     if (flight.callsign.toLowerCase().includes((focusedOption.value as string).toLowerCase()))
@@ -104,8 +104,6 @@ export async function flightStatus(flight: Flight): Promise<string> {
     const distanceFromDep = distanceFromAirport(flight.position, depAirport!);
     const distanceFromDest = distanceFromAirport(flight.position, destAirport!);
     
-    console.log(distanceFromDep, distanceFromDest);
-
     if (distanceFromDep < 50 && flight.position.vertFtPerSec *60 > 250 && flight.wows?.some(w => !w.wow)) {
       return `Climbing out of ${depAirport?.name ?? depAirport?.icao ?? flight.flightplan.dep}`;
     }
