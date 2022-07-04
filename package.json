@@ -36,7 +36,7 @@
     "serve": "node --experimental-json-modules build/main.js"
   },
   "dependencies": {
-    "@discordjs/opus": "^0.5.0",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.10.0",
     "@discordx/importer": "^1.1.2",
     "@discordx/koa": "^1.0.6",
