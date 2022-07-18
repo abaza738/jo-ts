@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
-    "@discordjs/voice": "^0.10.0",
+    "@discordjs/voice": "^0.11.0",
     "@discordx/importer": "^1.1.2",
     "@discordx/koa": "^1.0.6",
     "@discordx/music": "^4.0.2",
