@@ -1,18 +1,18 @@
-import { EmbedFieldData } from "discord.js";
+import { EmbedField } from "discord.js";
 import moment from "moment";
 import { Cloud } from "../models/shared.model";
 import { Forecast, Taf } from "../models/taf.model";
 
-export function decodeTaf(taf: Taf): EmbedFieldData[] {
-  let forecasts: EmbedFieldData[] = [];
+export function decodeTaf(taf: Taf): EmbedField[] {
+  let forecasts: EmbedField[] = [];
 
   if (taf.forecast?.length) {
     forecasts.push(
       ...taf.forecast.map((forecast: Forecast) => {
-        
         return {
           name: `${forecast.type}`,
-          value: extractForecastValue(taf, forecast)
+          value: extractForecastValue(taf, forecast),
+          inline: false
         }
       })
     );

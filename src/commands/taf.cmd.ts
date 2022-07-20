@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import moment from "moment";
 import Avwx from "../common/Avwx.js";
@@ -15,7 +15,7 @@ export abstract class TafCommand {
   async taf(
     @SlashOption("airport", {
       description: "ICAO or IATA code of an airport",
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
     })
     ident: string,
     interaction: CommandInteraction
@@ -41,22 +41,19 @@ export abstract class TafCommand {
         text: `Fetched from AVWX`,
         iconURL: constants.AVWX.URLS.ICON
       }
-    }).addField(
-      airport.name,
-      `Location: ${airport.city}, ${airport.country}
+    }).addFields({
+      name: airport.name,
+      value: `Location: ${airport.city}, ${airport.country}
       Elevation: ${airport.elevation_ft} ft. MSL`
-    ).addField(
-      "Time",
-      `Report time: ${moment(taf.time.dt).utc().format("MMM Do, HHmm")}Z
+    }, {
+      name: "Time",
+      value: `Report time: ${moment(taf.time.dt).utc().format("MMM Do, HHmm")}Z
       Valid from ${moment(taf.start_time?.dt).format("MMM Do, HHmm")}Z
       To ${moment(taf.end_time?.dt).format("MMM Do, HHmm")}Z`
-    );
-
-    embed.addFields(
-      decodeTaf(taf)
-    );
-
-    embed.addField("Raw", `\`\`\`\n${taf.raw}\`\`\``).setTimestamp(new Date());
+    },
+    ...decodeTaf(taf),
+    { name: "Raw", value: `\`\`\`\n${taf.raw}\`\`\`` })
+    .setTimestamp(new Date());
 
     interaction.reply({ embeds: [embed] });
   }

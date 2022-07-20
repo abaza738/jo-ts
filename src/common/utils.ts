@@ -5,7 +5,7 @@ import {
   CommandInteraction,
   EmbedAuthorData,
   EmbedFooterData,
-  MessageEmbed,
+  EmbedBuilder,
 } from "discord.js";
 import moment from "moment";
 import { Airport } from "../models/airport.model.js";
@@ -37,17 +37,17 @@ export function handleError(err: any, interaction: CommandInteraction): void {
       embedFactory({
         interaction: interaction,
         title: `Error`,
-        color: "RED",
-      }).addField(
-        err.response?.data?.error ?? `Description`,
-        err.response?.data?.help ?? err.message ?? err ?? `Unknown error occurred.`
-      ),
+        color: "Red",
+      }).addFields({
+        name: err.response?.data?.error ?? `Description`,
+        value: err.response?.data?.help ?? err.message ?? err ?? `Unknown error occurred.`
+      }),
     ],
   });
 }
 
-export function embedFactory(options: EmbedOptions): MessageEmbed {
-  const embed = new MessageEmbed()
+export function embedFactory(options: EmbedOptions): EmbedBuilder {
+  const embed = new EmbedBuilder()
     .setTitle(options.title)
     .setAuthor(generateEmbedAuthor(options.interaction))
     .setTimestamp(new Date());

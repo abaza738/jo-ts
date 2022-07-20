@@ -1,18 +1,14 @@
-import type {
+import { Player, Queue } from "@discordx/music";
+import { Pagination, PaginationResolver, PaginationType } from "@discordx/pagination";
+import {
+  ActionRowBuilder,
+  ButtonBuilder, ButtonStyle,
   Client,
   CommandInteraction,
-  ContextMenuInteraction,
-  Guild,
-  TextBasedChannel,
+  ContextMenuCommandInteraction, EmbedBuilder, Guild, Message, MessageActionRowComponentBuilder,
+  MessagePayload,
+  TextBasedChannel
 } from "discord.js";
-import {
-  Message,
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
-} from "discord.js";
-import { Pagination, PaginationResolver, PaginationType } from "@discordx/pagination";
-import { Player, Queue } from "@discordx/music";
 
 export class MyQueue extends Queue {
   lastControlMessage?: Message;
@@ -61,36 +57,36 @@ export class MyQueue extends Queue {
     return milliseconds ? milliseconds : 0;
   }
 
-  private controlsRow(): MessageActionRow[] {
-    const nextButton = new MessageButton()
+  private controlsRow(): ActionRowBuilder<MessageActionRowComponentBuilder>[] {
+    const nextButton = new ButtonBuilder()
       .setLabel("Next")
       .setEmoji("⏭")
-      .setStyle("PRIMARY")
+      .setStyle(ButtonStyle.Primary)
       .setDisabled(!this.isPlaying)
       .setCustomId("btn-next");
-    const pauseButton = new MessageButton()
+    const pauseButton = new ButtonBuilder()
       .setLabel(this.isPlaying ? "Pause" : "Resume")
       .setEmoji(this.isPlaying ? "⏸️" : "▶️")
-      .setStyle("PRIMARY")
+      .setStyle(ButtonStyle.Primary)
       .setCustomId("btn-pause");
-    const stopButton = new MessageButton()
+    const stopButton = new ButtonBuilder()
       .setLabel("Stop")
-      .setStyle("DANGER")
+      .setStyle(ButtonStyle.Danger)
       .setCustomId("btn-leave");
-    const repeatButton = new MessageButton()
+    const repeatButton = new ButtonBuilder()
       .setLabel("Repeat")
       .setEmoji("🔂")
       .setDisabled(!this.isPlaying)
-      .setStyle(this.repeat ? "DANGER" : "PRIMARY")
+      .setStyle(this.repeat ? ButtonStyle.Danger : ButtonStyle.Primary)
       .setCustomId("btn-repeat");
-    const loopButton = new MessageButton()
+    const loopButton = new ButtonBuilder()
       .setLabel("Loop")
       .setEmoji("🔁")
       .setDisabled(!this.isPlaying)
-      .setStyle(this.loop ? "DANGER" : "PRIMARY")
+      .setStyle(this.loop ? ButtonStyle.Danger : ButtonStyle.Primary)
       .setCustomId("btn-loop");
 
-    const row1 = new MessageActionRow().addComponents(
+    const row1 = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
       stopButton,
       pauseButton,
       nextButton,
@@ -98,24 +94,24 @@ export class MyQueue extends Queue {
       loopButton
     );
 
-    const queueButton = new MessageButton()
+    const queueButton = new ButtonBuilder()
       .setLabel("Queue")
       .setEmoji("🎵")
-      .setStyle("PRIMARY")
+      .setStyle(ButtonStyle.Primary)
       .setCustomId("btn-queue");
-    const mixButton = new MessageButton()
+    const mixButton = new ButtonBuilder()
       .setLabel("Shuffle")
       .setEmoji("🎛️")
       .setDisabled(!this.isPlaying)
-      .setStyle("PRIMARY")
+      .setStyle(ButtonStyle.Primary)
       .setCustomId("btn-mix");
-    const controlsButton = new MessageButton()
+    const controlsButton = new ButtonBuilder()
       .setLabel("Controls")
       .setEmoji("🔄")
-      .setStyle("PRIMARY")
+      .setStyle(ButtonStyle.Primary)
       .setCustomId("btn-controls");
 
-    const row2 = new MessageActionRow().addComponents(
+    const row2 = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
       queueButton,
       mixButton,
       controlsButton
@@ -131,7 +127,7 @@ export class MyQueue extends Queue {
       return;
     }
     this.lockUpdate = true;
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     embed.setTitle("Music Controls");
     const currentTrack = this.currentTrack;
     const nextTrack = this.nextTrack;
@@ -146,14 +142,10 @@ export class MyQueue extends Queue {
     const user = currentTrack.metadata.isYoutubeTrack()
       ? currentTrack.metadata.options?.user
       : currentTrack.metadata?.user;
-
-    embed.addField(
-      "Now Playing" +
-        (this.size > 2 ? ` (Total: ${this.size} tracks queued)` : ""),
-      `[${currentTrack.metadata.title}](${currentTrack.metadata.url ?? "NaN"})${
-        user ? ` by ${user}` : ""
-      }`
-    );
+    embed.addFields({
+      name: "Now Playing" + (this.size > 2 ? ` (Total: ${this.size} tracks queued)` : ""),
+      value: `[${currentTrack.metadata.title}](${currentTrack.metadata.url ?? "NaN"})${ user ? ` by ${user}` : "" }`
+    });
 
     const progressBaroptions = {
       size: 15,
@@ -179,7 +171,10 @@ export class MyQueue extends Queue {
       const time =
         "`" + currentTime + " ".repeat(spacing * 3 - 2) + endTime + "`";
 
-      embed.addField(bar, time);
+      embed.addFields({
+        name: bar,
+        value: time
+      });
     }
 
     if (
@@ -189,16 +184,16 @@ export class MyQueue extends Queue {
       embed.setThumbnail(currentTrack.metadata.info.bestThumbnail.url);
     }
 
-    embed.addField(
-      "Next Song",
-      nextTrack ? `[${nextTrack.title}](${nextTrack.url})` : "No upcoming song"
-    );
+    embed.addFields({
+      name: "Next Song",
+      value: nextTrack ? `[${nextTrack.title}](${nextTrack.url})` : "No upcoming song"
+    });
 
-    const pMsg = {
+    const pMsg: MessagePayload = new MessagePayload(this.lastControlMessage!, {
       content: options?.text,
       embeds: [embed],
       components: [...this.controlsRow()],
-    };
+    });
 
     if (!this.isReady && this.lastControlMessage) {
       await this.lastControlMessage.delete();
@@ -226,7 +221,7 @@ export class MyQueue extends Queue {
   }
 
   public async view(
-    interaction: Message | CommandInteraction | ContextMenuInteraction,
+    interaction: Message | CommandInteraction | ContextMenuCommandInteraction,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     client: Client
   ): Promise<void> {

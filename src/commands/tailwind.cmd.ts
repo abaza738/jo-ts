@@ -110,7 +110,7 @@ export abstract class Tailwind {
                       text: `Fetched from AVWX`,
                       iconURL: constants.AVWX.URLS.ICON,
                     },
-                  }).addField(`Tailwind`, `${tailwindComponent}${metar.units.wind_speed}`),
+                  }).addFields({ name: `Tailwind`, value: `${tailwindComponent}${metar.units.wind_speed}`}),
                 ],
               });
             }

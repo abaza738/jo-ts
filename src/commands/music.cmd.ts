@@ -8,7 +8,7 @@ import {
   SlashOption,
 } from "discordx";
 import type { CommandInteraction, Guild } from "discord.js";
-import { GuildMember, MessageEmbed } from "discord.js";
+import { GuildMember, EmbedBuilder } from "discord.js";
 import type { MyQueue } from "../common/music.js";
 import { MyPlayer } from "../common/music.js";
 
@@ -253,7 +253,7 @@ export class music {
     if (!song) {
       interaction.followUp("The song could not be found");
     } else {
-      const embed = new MessageEmbed();
+      const embed = new EmbedBuilder();
       embed.setTitle("Enqueued");
       embed.setDescription(`Enqueued song **${song.title}****`);
       interaction.followUp({ embeds: [embed] });
@@ -278,35 +278,35 @@ export class music {
     if (!songs) {
       interaction.followUp("The playlist could not be found");
     } else {
-      const embed = new MessageEmbed();
+      const embed = new EmbedBuilder();
       embed.setTitle("Enqueued");
       embed.setDescription(`Enqueued  **${songs.length}** songs from playlist`);
       interaction.followUp({ embeds: [embed] });
     }
   }
 
-  @Slash("spotify", { description: "Play a spotify link" })
-  @SlashGroup("music")
-  async spotify(
-    @SlashOption("link", { description: "spotify link" })
-    link: string,
-    interaction: CommandInteraction,
-    client: Client
-  ): Promise<void> {
-    const queue = await this.processJoin(interaction, client);
-    if (!queue) {
-      return;
-    }
-    const songs = await queue.spotify(link, { user: interaction.user });
-    if (!songs) {
-      interaction.followUp("The spotify song/playlist could not be found");
-    } else {
-      const embed = new MessageEmbed();
-      embed.setTitle("Enqueued");
-      embed.setDescription(`Enqueued  **${songs.length}** spotify songs`);
-      interaction.followUp({ embeds: [embed] });
-    }
-  }
+  // @Slash("spotify", { description: "Play a spotify link" })
+  // @SlashGroup("music")
+  // async spotify(
+  //   @SlashOption("link", { description: "spotify link" })
+  //   link: string,
+  //   interaction: CommandInteraction,
+  //   client: Client
+  // ): Promise<void> {
+  //   const queue = await this.processJoin(interaction, client);
+  //   if (!queue) {
+  //     return;
+  //   }
+  //   const songs = await queue.spotify(link, { user: interaction.user });
+  //   if (!songs) {
+  //     interaction.followUp("The spotify song/playlist could not be found");
+  //   } else {
+  //     const embed = new EmbedBuilder();
+  //     embed.setTitle("Enqueued");
+  //     embed.setDescription(`Enqueued  **${songs.length}** spotify songs`);
+  //     interaction.followUp({ embeds: [embed] });
+  //   }
+  // }
 
   validateInteraction(
     interaction: CommandInteraction,

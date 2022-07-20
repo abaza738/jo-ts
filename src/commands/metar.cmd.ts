@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import Avwx from "../common/Avwx.js";
 import { constants } from "../common/constants.js";
@@ -13,7 +13,7 @@ export abstract class MetarCommand {
   async metar(
     @SlashOption("airport", {
       description: "ICAO or IATA code of an airport",
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
     })
     ident: string,
     interaction: CommandInteraction
@@ -40,28 +40,17 @@ export abstract class MetarCommand {
         text: `Fetched from AVWX`,
         iconURL: constants.AVWX.URLS.ICON,
       },
-    }).addField(
-      airport.name,
-      `Location: ${airport.city}, ${airport.country}
-      Elevation: ${airport.elevation_ft} ft. MSL`
-    );
-
-    embed.addField(
-      "Decoded",
-      decodeMetar(metar)
+    }).addFields(
+      { name: airport.name, value: `Location: ${airport.city}, ${airport.country}, Elevation: ${airport.elevation_ft} ft. MSL`},
+      { name: "Decoded", value: decodeMetar(metar) }
     );
 
     if (metar.remarks_info?.codes?.length) {
-      embed.addField(
-        "Remarks",
-        `${metar.remarks_info.codes
-          .map((remark: any) => remark.value)
-          .join("\n")}`
-      );
+      embed.addFields({ name: "Remarks", value: `${metar.remarks_info.codes.map((remark: any) => remark.value).join("\n")}`});
     }
 
     embed
-      .addField("Raw", `\`\`\`\n${metar.raw}\`\`\``)
+      .addFields({ name: "Raw", value: `\`\`\`\n${metar.raw}\`\`\``})
       .setTimestamp(new Date());
 
     interaction.reply({ embeds: [embed] });

@@ -26,10 +26,11 @@ export abstract class VATSIM {
       title: `VATSIM Online Activity`,
       interaction: interaction,
     })
-    .addField(`Pilots`, `${data.pilots.length}`, true)
-    .addField(`ATC`, `${data.controllers.length}`, true)
-    .addField(`Last Updated`, `<t:${moment(data.general?.update_timestamp).unix()}:R>`);
-
+    .addFields(
+      { name: `Pilots`, value: `${data.pilots.length}`, inline: true },
+      { name: `ATC`, value: `${data.controllers.length}`, inline: true },
+      { name: `Last Updated`, value: `<t:${moment(data.general?.update_timestamp).unix()}:R>` }
+    );
     interaction.reply({ embeds: [embed] });
   }
 }

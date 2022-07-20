@@ -18,7 +18,7 @@ export abstract class Info {
         url: "https://github.com/abaza738/jo-ts"
       },
       author: "Maher Abaza",
-      version: "1.0.6"
+      version: "1.1.0"
     };
 
     const embed = embedFactory({
@@ -26,12 +26,14 @@ export abstract class Info {
       interaction: interaction,
       description: `${pkg.description}`
     })
-    .addField(`Servers`, `${interaction.client.guilds.cache.size}`, true)
-    .addField(`Up Time`, `${moment.duration(interaction.client.uptime, "milliseconds").humanize()}`, true)
-    .addField(`Members`, `${interaction.client.guilds.cache.reduce((acc: number, value) => acc + value.memberCount, 0)}`, true)
-    .addField(`Invite`, `[Invite Jo Bot to your server!](https://ptb.discord.com/api/oauth2/authorize?client_id=781557275235188766&permissions=8&scope=bot%20applications.commands)`, true)
-    .addField(`Contribute`, `Submit issues and contribute to the bot's developmen on [GitHub](${pkg.repository.url})!`)
-    .addField(`Version`, `${pkg.version}`)
+    .addFields(
+      { name: `Servers`, value: `${interaction.client.guilds.cache.size}`, inline: true},
+      { name: `Up Time`, value: `${moment.duration(interaction.client.uptime, "milliseconds").humanize()}`, inline: true},
+      { name: `Members`, value: `${interaction.client.guilds.cache.reduce((acc: number, value) => acc + value.memberCount, 0)}`, inline: true},
+      { name: `Invite`, value: `[Invite Jo Bot to your server!](https://ptb.discord.com/api/oauth2/authorize?client_id=781557275235188766&permissions=8&scope=bot%20applications.commands)`, inline: true},
+      { name: `Contribute`, value: `Submit issues and contribute to the bot's developmen on [GitHub](${pkg.repository.url})!`},
+      { name: `Version`, value: `${pkg.version}`},
+    )
     .setFooter({ text: `Made by ${pkg.author}`, iconURL: `https://webstockreview.net/images/github-icon-png-8.png` });
 
     interaction.reply({ embeds: [embed] });

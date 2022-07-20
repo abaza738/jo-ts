@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import { constants } from "../common/constants.js";
 import { embedFactory, handleError } from "../common/utils.js";
@@ -30,7 +30,7 @@ export abstract class ActiveRWY {
   async rwy(
     @SlashOption("airport", {
       description: "ICAO or IATA code of an airport",
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
     })
     icao: string,
     interaction: CommandInteraction
@@ -65,10 +65,10 @@ export abstract class ActiveRWY {
                       text: "Fetched from AVWX",
                       iconURL: constants.AVWX.URLS.ICON,
                     },
-                  }).addField(
-                    "Reported Wind",
-                    `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`
-                  ),
+                  }).addFields({
+                    name: "Reported Wind",
+                    value: `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`
+                  }),
                 ],
               });
               return;
@@ -86,10 +86,10 @@ export abstract class ActiveRWY {
                   text: "Fetched from AVWX. Calculation does not take into account local SOP",
                   iconURL: constants.AVWX.URLS.ICON,
                 },
-              }).addField(
-                "Current Wind",
-                `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`
-              );
+              }).addFields({
+                name: "Current Wind",
+                value: `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`
+              });
               interaction.reply({ embeds: [embed] });
             } else {
               interaction.reply(
