@@ -41,7 +41,7 @@
     "@discordx/importer": "^1.1.2",
     "@discordx/koa": "^1.0.6",
     "@discordx/music": "^4.0.2",
-    "@discordx/pagination": "^2.0.0",
+    "@discordx/pagination": "^3.0.0",
     "@discordx/utilities": "^4.2.4",
     "@koa/router": "^11.0.1",
     "axios": "^0.27.0",
