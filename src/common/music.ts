@@ -6,7 +6,8 @@ import {
   Client,
   CommandInteraction,
   ContextMenuCommandInteraction, EmbedBuilder, Guild, Message, MessageActionRowComponentBuilder,
-  MessagePayload,
+  MessageEditOptions,
+  MessageOptions,
   TextBasedChannel
 } from "discord.js";
 
@@ -189,12 +190,6 @@ export class MyQueue extends Queue {
       value: nextTrack ? `[${nextTrack.title}](${nextTrack.url})` : "No upcoming song"
     });
 
-    const pMsg: MessagePayload = new MessagePayload(this.lastControlMessage!, {
-      content: options?.text,
-      embeds: [embed],
-      components: [...this.controlsRow()],
-    });
-
     if (!this.isReady && this.lastControlMessage) {
       await this.lastControlMessage.delete();
       this.lastControlMessage = undefined;
@@ -208,9 +203,18 @@ export class MyQueue extends Queue {
           await this.lastControlMessage.delete();
           this.lastControlMessage = undefined;
         }
-        this.lastControlMessage = await this.channel?.send(pMsg);
+        const message: MessageOptions = {
+          content: options?.text,
+          embeds: [embed],
+          components: [...this.controlsRow()]
+        };
+        this.lastControlMessage = await this.channel?.send(message);
       } else {
-        await this.lastControlMessage.edit(pMsg);
+        const message: MessageEditOptions = {
+          embeds: [embed],
+          components: [...this.controlsRow()]
+        };
+        await this.lastControlMessage.edit(message);
       }
     } catch (err) {
       // ignore
