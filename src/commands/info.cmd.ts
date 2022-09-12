@@ -17,7 +17,7 @@ export abstract class Info {
     this.packageJson = JSON.parse(fileByteArray);
   }
 
-  @Slash('info', { description: 'General information about the bot' })
+  @Slash({ description: 'General information about the bot' })
   async info(interaction: CommandInteraction) {
 
     if (!this.packageJson.name || !this.packageJson.description || !this.packageJson.version) {

@@ -7,15 +7,15 @@ import { embedFactory, handleError } from "../common/utils.js";
 
 @Discord()
 export abstract class Tailwind {
-  @Slash("tailwind", {
+  @Slash({
     description:
       "Calculate the tailwind component for a specific runway at a specific airport",
   })
   async tailwind(
-    @SlashOption("airport", { description: "Which airport?" })
+    @SlashOption({ name: "airport", description: "Which airport?" })
     ident: string,
 
-    @SlashOption("runway", { description: "Which runway?" })
+    @SlashOption({ name: "runway", description: "Which runway?" })
     runway: string,
 
     interaction: CommandInteraction

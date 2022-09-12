@@ -7,7 +7,7 @@ import Vatsim from "../common/VATSIM.js";
 @Discord()
 @SlashGroup({name: 'vatsim', description: 'Some VATSIM commands'})
 export abstract class VATSIM {
-  @Slash('online', { description: "Online activity brief from VATSIM" })
+  @Slash({ description: "Online activity brief from VATSIM" })
   @SlashGroup('vatsim')
   async online(interaction: CommandInteraction) {
     let data: any;

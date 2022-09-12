@@ -11,9 +11,10 @@ import { Taf } from "../models/taf.model.js";
 @Discord()
 export abstract class TafCommand {
 
-  @Slash("taf", { description: "Get a TAF report." })
+  @Slash({ description: "Get a TAF report." })
   async taf(
-    @SlashOption("airport", {
+    @SlashOption({
+      name: "airport",
       description: "ICAO or IATA code of an airport",
       type: ApplicationCommandOptionType.String,
     })
