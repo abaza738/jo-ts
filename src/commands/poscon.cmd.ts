@@ -10,7 +10,7 @@ import { POSCONOnline } from "../models/poscon/online.js";
 @SlashGroup({ name: 'poscon' })
 export abstract class POSCONCommand {
 
-  @Slash('online', { description: 'Get online activity brief for POSCON' })
+  @Slash({ name: 'online', description: 'Get online activity brief for POSCON' })
   @SlashGroup('poscon')
   async poscon(interaction: CommandInteraction) {
     let onlineData: POSCONOnline | undefined;
@@ -43,10 +43,11 @@ export abstract class POSCONCommand {
     interaction.reply({ embeds: [embed] });
   }
 
-  @Slash('flight', { description: 'Get details of an online flight on POSCON'})
+  @Slash({ name: 'flight', description: 'Get details of an online flight on POSCON'})
   @SlashGroup('poscon')
   async flight(
-    @SlashOption('callsign', {
+    @SlashOption({
+      name: 'callsign',
       autocomplete: async (autocomplete: AutocompleteInteraction) => getAutocompleteOptions(autocomplete),
       type: ApplicationCommandOptionType.String
     })

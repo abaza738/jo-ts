@@ -9,10 +9,11 @@ import { Metar } from "../models/metar.model.js";
 
 @Discord()
 export abstract class MetarCommand {
-  @Slash("metar", { description: "Get a METAR report." })
+  @Slash({ description: 'Get a METAR report.' })
   async metar(
-    @SlashOption("airport", {
-      description: "ICAO or IATA code of an airport",
+    @SlashOption({
+      name: 'airport',
+      description: 'ICAO or IATA code of an airport',
       type: ApplicationCommandOptionType.String,
     })
     ident: string,

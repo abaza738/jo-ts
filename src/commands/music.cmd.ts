@@ -21,7 +21,7 @@ export class music {
     this.player = new MyPlayer();
   }
 
-  @On("voiceStateUpdate")
+  @On({ event: "voiceStateUpdate" })
   voiceUpdate(
     [oldState, newState]: ArgsOf<"voiceStateUpdate">,
     client: Client
@@ -106,7 +106,7 @@ export class music {
     return queue;
   }
 
-  @ButtonComponent("btn-next")
+  @ButtonComponent({ id: "btn-next" })
   async nextControl(
     interaction: CommandInteraction,
     client: Client
@@ -120,7 +120,7 @@ export class music {
     interaction.deleteReply();
   }
 
-  @ButtonComponent("btn-pause")
+  @ButtonComponent({ id: "btn-pause" })
   async pauseControl(
     interaction: CommandInteraction,
     client: Client
@@ -134,7 +134,7 @@ export class music {
     interaction.deleteReply();
   }
 
-  @ButtonComponent("btn-leave")
+  @ButtonComponent({ id: "btn-leave" })
   async leaveControl(
     interaction: CommandInteraction,
     client: Client
@@ -148,7 +148,7 @@ export class music {
     interaction.deleteReply();
   }
 
-  @ButtonComponent("btn-repeat")
+  @ButtonComponent({ id: "btn-repeat" })
   async repeatControl(
     interaction: CommandInteraction,
     client: Client
@@ -162,7 +162,7 @@ export class music {
     interaction.deleteReply();
   }
 
-  @ButtonComponent("btn-queue")
+  @ButtonComponent({ id: "btn-queue" })
   queueControl(interaction: CommandInteraction, client: Client): void {
     const queue = this.validateControlInteraction(interaction, client);
     if (!queue) {
@@ -171,7 +171,7 @@ export class music {
     queue.view(interaction, client);
   }
 
-  @ButtonComponent("btn-mix")
+  @ButtonComponent({ id: "btn-mix" })
   async mixControl(
     interaction: CommandInteraction,
     client: Client
@@ -185,7 +185,7 @@ export class music {
     interaction.deleteReply();
   }
 
-  @ButtonComponent("btn-controls")
+  @ButtonComponent({ id: "btn-controls" })
   async controlsControl(
     interaction: CommandInteraction,
     client: Client
@@ -237,10 +237,10 @@ export class music {
     return queue;
   }
 
-  @Slash("play", { description: "Play a song" })
+  @Slash({ description: "Play a song" })
   @SlashGroup("music")
   async play(
-    @SlashOption("song", { description: "song name" })
+    @SlashOption({ name: "song", description: "song name" })
     songName: string,
     interaction: CommandInteraction,
     client: Client
@@ -260,10 +260,10 @@ export class music {
     }
   }
 
-  @Slash("playlist", { description: "Play a playlist" })
+  @Slash({ description: "Play a playlist" })
   @SlashGroup("music")
   async playlist(
-    @SlashOption("playlist", { description: "playlist name" })
+    @SlashOption({ name: "playlist", description: "playlist name" })
     playlistName: string,
     interaction: CommandInteraction,
     client: Client
@@ -351,7 +351,7 @@ export class music {
     return { guild: interaction.guild, member: interaction.member, queue };
   }
 
-  @Slash("skip", { description: "skip track" })
+  @Slash({ description: "skip track" })
   @SlashGroup("music")
   skip(interaction: CommandInteraction, client: Client): void {
     const validate = this.validateInteraction(interaction, client);
@@ -365,7 +365,7 @@ export class music {
     interaction.reply("> skipped current song");
   }
 
-  @Slash("mix", { description: "mix tracks" })
+  @Slash({ description: "mix tracks" })
   @SlashGroup("music")
   mix(interaction: CommandInteraction, client: Client): void {
     const validate = this.validateInteraction(interaction, client);
@@ -379,7 +379,7 @@ export class music {
     interaction.reply("> mixed current queue");
   }
 
-  @Slash("pause", { description: "pause music" })
+  @Slash({ description: "pause music" })
   @SlashGroup("music")
   pause(interaction: CommandInteraction, client: Client): void {
     const validate = this.validateInteraction(interaction, client);
@@ -398,7 +398,7 @@ export class music {
     interaction.reply("> paused music");
   }
 
-  @Slash("resume", { description: "resume music" })
+  @Slash({ description: "resume music" })
   @SlashGroup("music")
   resume(interaction: CommandInteraction, client: Client): void {
     const validate = this.validateInteraction(interaction, client);
@@ -417,12 +417,10 @@ export class music {
     interaction.reply("> resumed music");
   }
 
-  @Slash("seek", { description: "seek music" })
+  @Slash({ description: "seek music" })
   @SlashGroup("music")
   seek(
-    @SlashOption("time", {
-      description: "seek time in seconds",
-    })
+    @SlashOption({ name: "time", description: "seek time in seconds" })
     time: number,
     interaction: CommandInteraction,
     client: Client
@@ -447,7 +445,7 @@ export class music {
     interaction.reply("> current music seeked");
   }
 
-  @Slash("leave", { description: "stop music" })
+  @Slash({ description: "stop music" })
   @SlashGroup("music")
   leave(interaction: CommandInteraction, client: Client): void {
     const validate = this.validateInteraction(interaction, client);

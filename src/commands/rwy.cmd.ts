@@ -26,9 +26,10 @@ function getActiveRunways(runways: any[], windDirection: number) {
 
 @Discord()
 export abstract class ActiveRWY {
-  @Slash("rwy", { description: "Find the active runway of an airport." })
+  @Slash({ description: "Find the active runway of an airport." })
   async rwy(
-    @SlashOption("airport", {
+    @SlashOption({
+      name: "airport",
       description: "ICAO or IATA code of an airport",
       type: ApplicationCommandOptionType.String,
     })
