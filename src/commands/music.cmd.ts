@@ -1,3 +1,4 @@
+import { CommandInteraction, EmbedBuilder, Guild, GuildMember } from "discord.js";
 import type { ArgsOf, Client } from "discordx";
 import {
   ButtonComponent,
@@ -5,12 +6,11 @@ import {
   On,
   Slash,
   SlashGroup,
-  SlashOption,
+  SlashOption
 } from "discordx";
-import type { CommandInteraction, Guild } from "discord.js";
-import { GuildMember, EmbedBuilder } from "discord.js";
 import type { MyQueue } from "../common/music.js";
 import { MyPlayer } from "../common/music.js";
+import { SpotifyManager } from "../common/spotify.js";
 
 @Discord()
 @SlashGroup({ name: "music" })
@@ -22,10 +22,10 @@ export class music {
   }
 
   @On({ event: "voiceStateUpdate" })
-  voiceUpdate(
+  async voiceUpdate(
     [oldState, newState]: ArgsOf<"voiceStateUpdate">,
     client: Client
-  ): void {
+  ): Promise<void> {
     const queue = this.player.getQueue(oldState.guild);
 
     if (
@@ -65,15 +65,16 @@ export class music {
         );
         queue.leave();
       }, 5 * 60 * 1000);
-    } else if (queue.isPause && totalMembers.size) {
+    } else if (queue.isPause && totalMembers.size && ((oldState.channel?.members?.size ?? 0) < (newState.channel?.members?.size ?? 0))) {
       if (queue.timeoutTimer) {
         clearTimeout(queue.timeoutTimer);
         queue.timeoutTimer = undefined;
       }
       queue.resume();
-      queue.channel.send(
+      const message = await queue.channel.send(
         "> There has been a new participant in my voice channel, and the queue will be resumed. Enjoy the music 🎶"
       );
+      setTimeout(() => message.delete(), 15e3);
     }
   }
 
@@ -260,7 +261,7 @@ export class music {
     }
   }
 
-  @Slash({ description: "Play a playlist" })
+  @Slash({ description: "Play a YouTube playlist" })
   @SlashGroup("music")
   async playlist(
     @SlashOption({ name: "playlist", description: "playlist name" })
@@ -285,28 +286,38 @@ export class music {
     }
   }
 
-  // @Slash("spotify", { description: "Play a spotify link" })
-  // @SlashGroup("music")
-  // async spotify(
-  //   @SlashOption("link", { description: "spotify link" })
-  //   link: string,
-  //   interaction: CommandInteraction,
-  //   client: Client
-  // ): Promise<void> {
-  //   const queue = await this.processJoin(interaction, client);
-  //   if (!queue) {
-  //     return;
-  //   }
-  //   const songs = await queue.spotify(link, { user: interaction.user });
-  //   if (!songs) {
-  //     interaction.followUp("The spotify song/playlist could not be found");
-  //   } else {
-  //     const embed = new EmbedBuilder();
-  //     embed.setTitle("Enqueued");
-  //     embed.setDescription(`Enqueued  **${songs.length}** spotify songs`);
-  //     interaction.followUp({ embeds: [embed] });
-  //   }
-  // }
+  @Slash({ name: "spotify", description: "Play a spotify song or playlist" })
+  @SlashGroup("music")
+  async spotify(
+    @SlashOption({ name: "link", description: "spotify link" })
+    link: string,
+    interaction: CommandInteraction,
+    client: Client
+  ): Promise<void> {
+    const queue = await this.processJoin(interaction, client);
+    if (!queue) {
+      return;
+    }
+    const songs: any[] = [];
+    const embed = new EmbedBuilder();
+    embed.setTitle("Enqueued");
+    SpotifyManager.getTracks(link, async ({track, last}) => {
+      if (!track) {
+        return;
+      }
+
+      const song = await queue.play(track);
+      songs.push(song);
+
+      let message = `Enqueued song **${song?.title}**`;
+      if (last && songs.length > 1) {
+        message = `Enqueued  **${songs.length}** spotify songs`;
+      }
+
+      embed.setDescription(message);
+      interaction.editReply({ embeds: [embed] });
+    });
+  }
 
   validateInteraction(
     interaction: CommandInteraction,
