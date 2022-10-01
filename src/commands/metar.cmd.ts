@@ -15,6 +15,7 @@ export abstract class MetarCommand {
       name: 'airport',
       description: 'ICAO or IATA code of an airport',
       type: ApplicationCommandOptionType.String,
+      required: true
     })
     ident: string,
     interaction: CommandInteraction

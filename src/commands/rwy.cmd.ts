@@ -32,6 +32,7 @@ export abstract class ActiveRWY {
       name: "airport",
       description: "ICAO or IATA code of an airport",
       type: ApplicationCommandOptionType.String,
+      required: true,
     })
     icao: string,
     interaction: CommandInteraction
@@ -68,7 +69,7 @@ export abstract class ActiveRWY {
                     },
                   }).addFields({
                     name: "Reported Wind",
-                    value: `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`
+                    value: `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`,
                   }),
                 ],
               });
@@ -89,7 +90,7 @@ export abstract class ActiveRWY {
                 },
               }).addFields({
                 name: "Current Wind",
-                value: `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`
+                value: `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`,
               });
               interaction.reply({ embeds: [embed] });
             } else {

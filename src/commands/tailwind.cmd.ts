@@ -12,10 +12,20 @@ export abstract class Tailwind {
       "Calculate the tailwind component for a specific runway at a specific airport",
   })
   async tailwind(
-    @SlashOption({ name: "airport", description: "Which airport?", type: ApplicationCommandOptionType.String })
+    @SlashOption({
+      name: "airport",
+      description: "Which airport?",
+      type: ApplicationCommandOptionType.String,
+      required: true,
+    })
     ident: string,
 
-    @SlashOption({ name: "runway", description: "Which runway?", type: ApplicationCommandOptionType.String })
+    @SlashOption({
+      name: "runway",
+      description: "Which runway?",
+      type: ApplicationCommandOptionType.String,
+      required: true,
+    })
     runway: string,
 
     interaction: CommandInteraction
@@ -110,7 +120,10 @@ export abstract class Tailwind {
                       text: `Fetched from AVWX`,
                       iconURL: constants.AVWX.URLS.ICON,
                     },
-                  }).addFields({ name: `Tailwind`, value: `${tailwindComponent}${metar.units.wind_speed}`}),
+                  }).addFields({
+                    name: `Tailwind`,
+                    value: `${tailwindComponent}${metar.units.wind_speed}`,
+                  }),
                 ],
               });
             }
