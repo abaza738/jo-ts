@@ -3,7 +3,7 @@ import {
   CommandInteraction,
   EmbedBuilder,
   Guild,
-  GuildMember,
+  GuildMember
 } from "discord.js";
 import type { ArgsOf, Client } from "discordx";
 import {
@@ -12,7 +12,7 @@ import {
   On,
   Slash,
   SlashGroup,
-  SlashOption,
+  SlashOption
 } from "discordx";
 import type { MyQueue } from "../common/music.js";
 import { MyPlayer } from "../common/music.js";
@@ -256,6 +256,7 @@ export class music {
       name: "song",
       description: "song name",
       type: ApplicationCommandOptionType.String,
+      required: true
     })
     songName: string,
     interaction: CommandInteraction,
@@ -283,6 +284,7 @@ export class music {
       name: "playlist",
       description: "playlist name",
       type: ApplicationCommandOptionType.String,
+      required: true
     })
     playlistName: string,
     interaction: CommandInteraction,
@@ -312,6 +314,7 @@ export class music {
       name: "link",
       description: "spotify link",
       type: ApplicationCommandOptionType.String,
+      required: true
     })
     link: string,
     interaction: CommandInteraction,
@@ -481,6 +484,7 @@ export class music {
       name: "time",
       description: "seek time in seconds",
       type: ApplicationCommandOptionType.String,
+      required: true
     })
     time: number,
     interaction: CommandInteraction,
