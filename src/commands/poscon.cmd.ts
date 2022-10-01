@@ -7,7 +7,7 @@ import { embedFactory, flightStatus, getAutocompleteOptions, handleError, KHzToM
 import { POSCONOnline } from "../models/poscon/online.js";
 
 @Discord()
-@SlashGroup({ name: 'poscon' })
+@SlashGroup({ name: 'poscon', description: 'POSCON commands!' })
 export abstract class POSCONCommand {
 
   @Slash({ name: 'online', description: 'Get online activity brief for POSCON' })
@@ -48,6 +48,7 @@ export abstract class POSCONCommand {
   async flight(
     @SlashOption({
       name: 'callsign',
+      description: 'The callsign of the flight (choose from the list)',
       autocomplete: async (autocomplete: AutocompleteInteraction) => getAutocompleteOptions(autocomplete),
       type: ApplicationCommandOptionType.String
     })

@@ -6,8 +6,8 @@ import {
   Client,
   CommandInteraction,
   ContextMenuCommandInteraction, EmbedBuilder, Guild, Message, MessageActionRowComponentBuilder,
+  MessageCreateOptions,
   MessageEditOptions,
-  MessageOptions,
   TextBasedChannel
 } from "discord.js";
 
@@ -203,7 +203,7 @@ export class MyQueue extends Queue {
           await this.lastControlMessage.delete();
           this.lastControlMessage = undefined;
         }
-        const message: MessageOptions = {
+        const message: MessageCreateOptions = {
           content: options?.text,
           embeds: [embed],
           components: [...this.controlsRow()]
@@ -276,7 +276,7 @@ export class MyQueue extends Queue {
         )
         .join("\n\n");
 
-      return `${current}\n\`\`\`markdown\n${queue}\`\`\``;
+      return { content: `${current}\n\`\`\`markdown\n${queue}\`\`\`` };
     }, Math.round(this.size / 10));
 
     await new Pagination(interaction, pageOptions, {

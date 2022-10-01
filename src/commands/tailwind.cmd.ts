@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 import { constants } from "../common/constants.js";
 import calculateTailwind from "../common/tailwind.script.js";
@@ -12,10 +12,10 @@ export abstract class Tailwind {
       "Calculate the tailwind component for a specific runway at a specific airport",
   })
   async tailwind(
-    @SlashOption({ name: "airport", description: "Which airport?" })
+    @SlashOption({ name: "airport", description: "Which airport?", type: ApplicationCommandOptionType.String })
     ident: string,
 
-    @SlashOption({ name: "runway", description: "Which runway?" })
+    @SlashOption({ name: "runway", description: "Which runway?", type: ApplicationCommandOptionType.String })
     runway: string,
 
     interaction: CommandInteraction

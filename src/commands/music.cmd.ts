@@ -1,4 +1,10 @@
-import { CommandInteraction, EmbedBuilder, Guild, GuildMember } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  CommandInteraction,
+  EmbedBuilder,
+  Guild,
+  GuildMember,
+} from "discord.js";
 import type { ArgsOf, Client } from "discordx";
 import {
   ButtonComponent,
@@ -6,14 +12,14 @@ import {
   On,
   Slash,
   SlashGroup,
-  SlashOption
+  SlashOption,
 } from "discordx";
 import type { MyQueue } from "../common/music.js";
 import { MyPlayer } from "../common/music.js";
 import { SpotifyManager } from "../common/spotify.js";
 
 @Discord()
-@SlashGroup({ name: "music" })
+@SlashGroup({ name: "music", description: "Music commands!" })
 export class music {
   player;
 
@@ -65,7 +71,12 @@ export class music {
         );
         queue.leave();
       }, 5 * 60 * 1000);
-    } else if (queue.isPause && totalMembers.size && ((oldState.channel?.members?.size ?? 0) < (newState.channel?.members?.size ?? 0))) {
+    } else if (
+      queue.isPause &&
+      totalMembers.size &&
+      (oldState.channel?.members?.size ?? 0) <
+        (newState.channel?.members?.size ?? 0)
+    ) {
       if (queue.timeoutTimer) {
         clearTimeout(queue.timeoutTimer);
         queue.timeoutTimer = undefined;
@@ -241,7 +252,11 @@ export class music {
   @Slash({ description: "Play a song" })
   @SlashGroup("music")
   async play(
-    @SlashOption({ name: "song", description: "song name" })
+    @SlashOption({
+      name: "song",
+      description: "song name",
+      type: ApplicationCommandOptionType.String,
+    })
     songName: string,
     interaction: CommandInteraction,
     client: Client
@@ -264,7 +279,11 @@ export class music {
   @Slash({ description: "Play a YouTube playlist" })
   @SlashGroup("music")
   async playlist(
-    @SlashOption({ name: "playlist", description: "playlist name" })
+    @SlashOption({
+      name: "playlist",
+      description: "playlist name",
+      type: ApplicationCommandOptionType.String,
+    })
     playlistName: string,
     interaction: CommandInteraction,
     client: Client
@@ -289,7 +308,11 @@ export class music {
   @Slash({ name: "spotify", description: "Play a spotify song or playlist" })
   @SlashGroup("music")
   async spotify(
-    @SlashOption({ name: "link", description: "spotify link" })
+    @SlashOption({
+      name: "link",
+      description: "spotify link",
+      type: ApplicationCommandOptionType.String,
+    })
     link: string,
     interaction: CommandInteraction,
     client: Client
@@ -302,11 +325,13 @@ export class music {
     const embed = new EmbedBuilder();
     embed.setTitle("Enqueued");
     try {
-      SpotifyManager.getTracks(link, async ({track, last, error}) => {
+      SpotifyManager.getTracks(link, async ({ track, last, error }) => {
         if (error) {
           embed.setTitle(`Error`);
-          embed.setColor('Red');
-          embed.setDescription(`An error occurred while trying to access the link ${link}.`);
+          embed.setColor("Red");
+          embed.setDescription(
+            `An error occurred while trying to access the link ${link}.`
+          );
           interaction.followUp({ embeds: [embed] });
           return;
         }
@@ -314,27 +339,29 @@ export class music {
         if (!track) {
           return;
         }
-  
+
         const song = await queue.play(track);
         songs.push(song);
-  
+
         let message = `Enqueued song **${song?.title}**`;
         if (last && songs.length > 1) {
           message = `Enqueued  **${songs.length}** spotify songs`;
         }
-  
+
         embed.setDescription(message);
         interaction.editReply({ embeds: [embed] });
       });
     } catch (e) {
       console.log(`ERROR: Caught exception for getTracks.`);
-      
-      if (typeof e === 'string') {
+
+      if (typeof e === "string") {
         embed.setDescription(e);
         interaction.followUp({ embeds: [embed] });
         return;
       }
-      interaction.followUp({ content: `An error occurred while trying to access the Spotify link.` });
+      interaction.followUp({
+        content: `An error occurred while trying to access the Spotify link.`,
+      });
     }
   }
 
@@ -450,7 +477,11 @@ export class music {
   @Slash({ description: "seek music" })
   @SlashGroup("music")
   seek(
-    @SlashOption({ name: "time", description: "seek time in seconds" })
+    @SlashOption({
+      name: "time",
+      description: "seek time in seconds",
+      type: ApplicationCommandOptionType.String,
+    })
     time: number,
     interaction: CommandInteraction,
     client: Client
