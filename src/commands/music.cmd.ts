@@ -301,22 +301,41 @@ export class music {
     const songs: any[] = [];
     const embed = new EmbedBuilder();
     embed.setTitle("Enqueued");
-    SpotifyManager.getTracks(link, async ({track, last}) => {
-      if (!track) {
+    try {
+      SpotifyManager.getTracks(link, async ({track, last, error}) => {
+        if (error) {
+          embed.setTitle(`Error`);
+          embed.setColor('Red');
+          embed.setDescription(`An error occurred while trying to access the link ${link}.`);
+          interaction.followUp({ embeds: [embed] });
+          return;
+        }
+
+        if (!track) {
+          return;
+        }
+  
+        const song = await queue.play(track);
+        songs.push(song);
+  
+        let message = `Enqueued song **${song?.title}**`;
+        if (last && songs.length > 1) {
+          message = `Enqueued  **${songs.length}** spotify songs`;
+        }
+  
+        embed.setDescription(message);
+        interaction.editReply({ embeds: [embed] });
+      });
+    } catch (e) {
+      console.log(`ERROR: Caught exception for getTracks.`);
+      
+      if (typeof e === 'string') {
+        embed.setDescription(e);
+        interaction.followUp({ embeds: [embed] });
         return;
       }
-
-      const song = await queue.play(track);
-      songs.push(song);
-
-      let message = `Enqueued song **${song?.title}**`;
-      if (last && songs.length > 1) {
-        message = `Enqueued  **${songs.length}** spotify songs`;
-      }
-
-      embed.setDescription(message);
-      interaction.editReply({ embeds: [embed] });
-    });
+      interaction.followUp({ content: `An error occurred while trying to access the Spotify link.` });
+    }
   }
 
   validateInteraction(
