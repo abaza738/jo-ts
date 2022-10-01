@@ -14,8 +14,16 @@ export class SpotifyManager {
      * @param cb - Callback function called when retrieving the YouTube video for the single track or each of the tracks in a playlist.
      * Object sent to the callback function consists of: `track` with the YouTube video or `undefined`, and `last` as an indication if this is the last video in the playlist.
      */
-    public static async getTracks(url: string, cb: (data: {track: ytsr.Video | undefined, last?: boolean}) => void) {
-        const data: SpotifyTrack | SpotifyPlaylist = await getData(url);
+    public static async getTracks(url: string, cb: (data: {track?: ytsr.Video | undefined, last?: boolean, error?: any}) => void) {
+
+        let data: SpotifyTrack | SpotifyPlaylist;
+        try {
+            data = await getData(url);
+        } catch (e) {
+            console.log(`Oepsie doepsie! De Spotify link (${url}) is verbroken!`);
+            cb({ error: e });
+            return;
+        }
 
         if (!data) {
             return;
