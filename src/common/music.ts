@@ -168,7 +168,10 @@ export class MyQueue extends Queue {
       const bar = (this.isPlaying ? "▶️" : "⏸️") + " " + progressString;
       const currentTime = this.fromMS(timeNow);
       const endTime = this.fromMS(timeTotal);
-      const spacing = bar.length - currentTime.length - endTime.length;
+      let spacing = bar.length - currentTime.length - endTime.length;
+      if (typeof spacing !== "number" || spacing <= 0) {
+        spacing = 1;
+      }
       const time =
         "`" + currentTime + " ".repeat(spacing * 3 - 2) + endTime + "`";
 
