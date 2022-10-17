@@ -30,6 +30,8 @@ export abstract class Tailwind {
 
     interaction: CommandInteraction
   ): Promise<void> {
+    await interaction.deferReply();
+
     const airportInfoURL = constants.AVWX.URLS.AIRPORT_INFO;
     const metarURL = constants.AVWX.URLS.METAR;
 
@@ -77,7 +79,7 @@ export abstract class Tailwind {
               (metar.units.wind_speed === "m/s" && windSpeed < 3)
             ) {
               message = `Wind is ${metar.wind_direction.repr} at ${windSpeed} ${metar.units.wind_speed}.`;
-              interaction.reply({
+              interaction.followUp({
                 embeds: [
                   embedFactory({
                     interaction: interaction,
@@ -96,7 +98,7 @@ export abstract class Tailwind {
             const tailwindComponent: number = calculateTailwind(metar, RWY);
 
             if (tailwindComponent == -1) {
-              interaction.reply({
+              interaction.followUp({
                 embeds: [
                   embedFactory({
                     interaction: interaction,
@@ -110,7 +112,7 @@ export abstract class Tailwind {
                 ],
               });
             } else {
-              interaction.reply({
+              interaction.followUp({
                 embeds: [
                   embedFactory({
                     interaction: interaction,

@@ -10,6 +10,8 @@ export abstract class VATSIM {
   @Slash({ description: "Online activity brief from VATSIM" })
   @SlashGroup('vatsim')
   async online(interaction: CommandInteraction) {
+    await interaction.deferReply();
+
     let data: any;
 
     try {
@@ -31,6 +33,6 @@ export abstract class VATSIM {
       { name: `ATC`, value: `${data.controllers.length}`, inline: true },
       { name: `Last Updated`, value: `<t:${moment(data.general?.update_timestamp).unix()}:R>` }
     );
-    interaction.reply({ embeds: [embed] });
+    interaction.followUp({ embeds: [embed] });
   }
 }

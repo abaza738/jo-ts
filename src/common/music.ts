@@ -134,7 +134,7 @@ export class MyQueue extends Queue {
     const nextTrack = this.nextTrack;
     if (!currentTrack) {
       if (this.lastControlMessage) {
-        await this.lastControlMessage.delete();
+        await this.lastControlMessage?.delete();
         this.lastControlMessage = undefined;
       }
       this.lockUpdate = false;
@@ -194,7 +194,7 @@ export class MyQueue extends Queue {
     });
 
     if (!this.isReady && this.lastControlMessage) {
-      await this.lastControlMessage.delete();
+      await this.lastControlMessage?.delete();
       this.lastControlMessage = undefined;
       this.lockUpdate = false;
       return;
@@ -203,7 +203,7 @@ export class MyQueue extends Queue {
     try {
       if (!this.lastControlMessage || options?.force) {
         if (this.lastControlMessage) {
-          await this.lastControlMessage.delete();
+          await this.lastControlMessage?.delete();
           this.lastControlMessage = undefined;
         }
         const message: MessageCreateOptions = {
@@ -220,8 +220,10 @@ export class MyQueue extends Queue {
         await this.lastControlMessage.edit(message);
       }
     } catch (err) {
-      // ignore
-      console.log(err);
+      console.log(`Music embed message was deleted, sending a new one.`);
+      const sentMessage = await this.channel?.send({ embeds: [embed], components: [...this.controlsRow()] });
+      this.lastControlMessage = sentMessage;
+      this.channel?.send({ content: `Alex, stop trying to break me...` });
     }
 
     this.lockUpdate = false;
@@ -239,7 +241,7 @@ export class MyQueue extends Queue {
         ephemeral: true,
       });
       if (pMsg instanceof Message) {
-        setTimeout(() => pMsg.delete(), 3000);
+        setTimeout(() => pMsg?.delete(), 3000);
       }
       return;
     }
@@ -249,7 +251,7 @@ export class MyQueue extends Queue {
         `> Playing **${currentTrack.metadata.title}**`
       );
       if (pMsg instanceof Message) {
-        setTimeout(() => pMsg.delete(), 1e4);
+        setTimeout(() => pMsg?.delete(), 1e4);
       }
       return;
     }
@@ -286,7 +288,7 @@ export class MyQueue extends Queue {
       enableExit: true,
       onTimeout: (index, message) => {
         if (message.deletable) {
-          message.delete();
+          message?.delete();
         }
       },
       type: Math.round(this.size / 10) <= 5 ? PaginationType.Button : PaginationType.SelectMenu,

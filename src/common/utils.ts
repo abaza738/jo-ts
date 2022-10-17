@@ -32,7 +32,7 @@ export function generateEmbedAuthor(
 }
 
 export function handleError(err: any, interaction: CommandInteraction): void {
-  interaction.reply({
+  interaction[interaction.deferred ? 'followUp' : 'reply']({
     embeds: [
       embedFactory({
         interaction: interaction,
