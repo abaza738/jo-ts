@@ -22,6 +22,8 @@ export abstract class TafCommand {
     ident: string,
     interaction: CommandInteraction
   ): Promise<void> {
+    await interaction.deferReply();
+
     let airport: Airport | undefined, taf: Taf | undefined;
 
     try {
@@ -57,6 +59,6 @@ export abstract class TafCommand {
     { name: "Raw", value: `\`\`\`\n${taf.raw}\`\`\`` })
     .setTimestamp(new Date());
 
-    interaction.reply({ embeds: [embed] });
+    interaction.followUp({ embeds: [embed] });
   }
 }

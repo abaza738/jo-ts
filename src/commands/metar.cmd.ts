@@ -20,6 +20,7 @@ export abstract class MetarCommand {
     ident: string,
     interaction: CommandInteraction
   ): Promise<void> {
+    await interaction.deferReply();
 
     let airport: Airport | undefined, metar: Metar | undefined;
 
@@ -55,6 +56,6 @@ export abstract class MetarCommand {
       .addFields({ name: "Raw", value: `\`\`\`\n${metar.raw}\`\`\``})
       .setTimestamp(new Date());
 
-    interaction.reply({ embeds: [embed] });
+    interaction.followUp({ embeds: [embed] });
   }
 }

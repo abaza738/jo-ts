@@ -37,13 +37,15 @@ export abstract class ActiveRWY {
     icao: string,
     interaction: CommandInteraction
   ): Promise<void> {
+    await interaction.deferReply();
+
     const url = `${constants.AVWX.URLS.AIRPORT_INFO}${icao}`;
     axios
       .get(url, constants.AVWX.HEADERS)
       .then((airportData: any) => {
         const runways = airportData.data?.runways;
         if (!runways) {
-          interaction.reply(
+          interaction.followUp(
             `Couldn't get runway information for ${icao.toUpperCase()}.`
           );
           return;
@@ -57,7 +59,7 @@ export abstract class ActiveRWY {
 
             let wind_direction = metar.wind_direction.value;
             if (metar.wind_speed.value < 3) {
-              interaction.reply({
+              interaction.followUp({
                 embeds: [
                   embedFactory({
                     title: `Wind calm at ${icao.toUpperCase()}!`,
@@ -92,9 +94,9 @@ export abstract class ActiveRWY {
                 name: "Current Wind",
                 value: `${metar.wind_direction.repr}° at ${metar.wind_speed.value}${metar.units.wind_speed}`,
               });
-              interaction.reply({ embeds: [embed] });
+              interaction.followUp({ embeds: [embed] });
             } else {
-              interaction.reply(
+              interaction.followUp(
                 `Either there's a straight crosswind, or I can't get it done.`
               );
             }

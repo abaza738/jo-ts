@@ -3,7 +3,8 @@ import {
   CommandInteraction,
   EmbedBuilder,
   Guild,
-  GuildMember
+  GuildMember,
+  Message
 } from "discord.js";
 import type { ArgsOf, Client } from "discordx";
 import {
@@ -324,11 +325,14 @@ export class music {
     if (!queue) {
       return;
     }
-    const songs: any[] = [];
+    let songCount: number = 0;
     const embed = new EmbedBuilder();
-    embed.setTitle("Enqueued");
+    embed.setTitle("Adding songs...");
+
+    interaction.followUp({ embeds: [embed] });
+
     try {
-      SpotifyManager.getTracks(link, async ({ track, last, error }) => {
+      SpotifyManager.getTracks(link, async ({ playlist, track, last, error }) => {
         if (error) {
           embed.setTitle(`Error`);
           embed.setColor("Red");
@@ -343,16 +347,26 @@ export class music {
           return;
         }
 
-        const song = await queue.play(track);
-        songs.push(song);
+        await queue.play(track);
+        songCount++;
 
-        let message = `Enqueued song **${song?.title}**`;
-        if (last && songs.length > 1) {
-          message = `Enqueued  **${songs.length}** spotify songs`;
+        if (last && songCount > 1) {
+          if (playlist) {
+            embed.setTitle(`Playing ${playlist.name}${playlist.owner?.display_name ? ` by ${playlist.owner.display_name}` : ''}.`);
+            embed.setDescription(`Enqueued  **${songCount}** spotify songs`);
+
+            if (playlist.images?.length) {
+              embed.setThumbnail(playlist.images[0].url);
+            }
+            embed.setFields({ name: 'URL', value: link, inline: false });
+
+            try {
+              interaction.editReply({ embeds: [embed] });
+            } catch(e) {
+              console.log(`Could not delete interaction reply.`);
+            }
+          }
         }
-
-        embed.setDescription(message);
-        interaction.editReply({ embeds: [embed] });
       });
     } catch (e) {
       console.log(`ERROR: Caught exception for getTracks.`);

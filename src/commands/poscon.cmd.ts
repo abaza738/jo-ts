@@ -26,6 +26,8 @@ export abstract class POSCONCommand {
   })
   @SlashGroup("poscon")
   async poscon(interaction: CommandInteraction) {
+    await interaction.deferReply();
+
     let onlineData: POSCONOnline | undefined;
     try {
       onlineData = await POSCON.online();
@@ -74,7 +76,7 @@ export abstract class POSCONCommand {
           value: `<t:${moment(onlineData?.lastUpdated).unix()}:R>`,
         }
       );
-    interaction.reply({ embeds: [embed] });
+    interaction.followUp({ embeds: [embed] });
   }
 
   @Slash({
@@ -94,6 +96,8 @@ export abstract class POSCONCommand {
     callsign: string,
     interaction: CommandInteraction
   ) {
+    await interaction.deferReply();
+
     let online: POSCONOnline | undefined;
 
     try {
@@ -205,6 +209,6 @@ export abstract class POSCONCommand {
       value: `[${selectedFlight.userName}](${constants.POSCON.URLS.PROFILE}${selectedFlight.userId})`,
     });
 
-    interaction.reply({ embeds: [embed] });
+    interaction.followUp({ embeds: [embed] });
   }
 }
