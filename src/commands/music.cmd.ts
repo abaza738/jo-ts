@@ -18,6 +18,7 @@ import {
 import type { MyQueue } from "../common/music.js";
 import { MyPlayer } from "../common/music.js";
 import { SpotifyManager } from "../common/spotify.js";
+import { embedFactory } from "../common/utils.js";
 
 @Discord()
 @SlashGroup({ name: "music", description: "Music commands!" })
@@ -361,9 +362,11 @@ export class music {
             embed.setFields({ name: 'URL', value: link, inline: false });
 
             try {
-              interaction.editReply({ embeds: [embed] });
+              await interaction.editReply({ embeds: [embed] });
             } catch(e) {
-              console.log(`Could not delete interaction reply.`);
+              const alexEmbed = embedFactory({ title: 'Nice try Alex.', description: 'I win.', color: "White" });
+              await interaction.channel?.send({ embeds: [embed] });
+              await interaction.channel?.send({ embeds: [alexEmbed] });
             }
           }
         }
