@@ -15,8 +15,8 @@ import { constants } from "./constants.js";
 import POSCON from "./POSCON.js";
 
 interface EmbedOptions {
-  interaction: CommandInteraction;
   title: string;
+  interaction?: CommandInteraction;
   description?: string;
   color?: ColorResolvable;
   footer?: EmbedFooterData;
@@ -49,8 +49,8 @@ export function handleError(err: any, interaction: CommandInteraction): void {
 export function embedFactory(options: EmbedOptions): EmbedBuilder {
   const embed = new EmbedBuilder()
     .setTitle(options.title)
-    .setAuthor(generateEmbedAuthor(options.interaction))
     .setTimestamp(new Date());
+  if (options.interaction) embed.setAuthor(generateEmbedAuthor(options.interaction));
   if (options.description) embed.setDescription(options.description);
   if (options.footer) embed.setFooter(options.footer);
   if (options.color) embed.setColor(options.color);
