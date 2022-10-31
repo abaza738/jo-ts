@@ -16,7 +16,8 @@ export const client = new Client({
     IntentsBitField.Flags.GuildMembers,
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildMessageReactions,
-    IntentsBitField.Flags.GuildVoiceStates
+    IntentsBitField.Flags.GuildVoiceStates,
+    IntentsBitField.Flags.MessageContent,
   ],
   // If you only want to use global commands only, comment this line
   // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
