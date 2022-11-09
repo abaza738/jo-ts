@@ -1,12 +1,17 @@
-import { AuditLogEvent, Message, PartialMessage } from "discord.js";
+import { AuditLogEvent, Message, PartialMessage, User } from "discord.js";
 import type { ArgsOf } from "discordx";
 import { Discord, On } from "discordx";
+import { constants } from "../common/constants.js";
 import { embedFactory, sleep } from "../common/utils.js";
 
 @Discord()
 export class MessageDelete {
   @On()
   async messageDelete([message]: ArgsOf<"messageDelete">): Promise<void> {
+    if (message.author?.bot) {
+      return;
+    }
+    
     const userId = process.env.MAHER;
 
     if (!userId) {
@@ -17,16 +22,18 @@ export class MessageDelete {
     const executor = await this._retrieveExecutor(message);
 
     const embed = embedFactory({
-      title: `\`messageDelete\` event report`,
-      description: `Server: **${message.guild?.name}**\nDeleted by: **${executor ?? "-"}**`,
+      title: message.guild?.name ?? '',
       color: "Red",
-    });
-
-    if (message.content) {
-      embed.addFields([
-        { name: "Content", value: `\`\`\`\n${message.content}\`\`\`` },
-      ]);
-    }
+    })
+    .addFields([
+      { name: 'Sender', value: message.author?.toString() ?? '' },
+      { name: 'Deleted By', value: `${executor?.toString() ?? "N/A"}` },
+      { name: 'Content', value: message.content ?? '' },
+    ])
+    .setAuthor({
+      name: message.author?.username ?? '',
+      iconURL: message.author ? `${constants.DISCORD_CDN_AVATAR_URL}/${message.author.id}/${message.author.avatar}` : ''
+    })
 
     try {
       const user = message.client.users.cache.get(userId);
@@ -38,7 +45,7 @@ export class MessageDelete {
 
   private async _retrieveExecutor(
     message: Message<boolean> | PartialMessage
-  ): Promise<string | null> {
+  ): Promise<User | null> {
     await sleep(1000);
     let logs;
 
@@ -61,7 +68,7 @@ export class MessageDelete {
       (entry) =>
         entry.target.id === message.author?.id &&
         entry.extra.channel.id === message.channel.id &&
-        Date.now() - entry.createdTimestamp < 10000
+        Date.now() - entry.createdTimestamp < 20000
     );
 
     if (!entry) {
@@ -69,6 +76,6 @@ export class MessageDelete {
       return null;
     }
 
-    return entry.executor?.tag ?? null;
+    return entry.executor ?? null;
   }
 }
