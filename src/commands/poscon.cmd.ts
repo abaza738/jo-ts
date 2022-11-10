@@ -49,7 +49,7 @@ export abstract class POSCONCommand {
       },
     })
       .setThumbnail(constants.POSCON.LOGO)
-      .addFields(
+      .addFields([
         {
           name: "Pilots",
           value: `${onlineData?.totalPilots ?? 0}`,
@@ -75,7 +75,7 @@ export abstract class POSCONCommand {
           name: "Last updated",
           value: `<t:${moment(onlineData?.lastUpdated).unix()}:R>`,
         }
-      );
+      ]);
     interaction.followUp({ embeds: [embed] });
   }
 
