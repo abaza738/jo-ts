@@ -434,7 +434,17 @@ export class music {
 
   @Slash({ description: "skip track" })
   @SlashGroup("music")
-  skip(interaction: CommandInteraction, client: Client): void {
+  skip(
+    @SlashOption({
+      name: 'count',
+      description: 'How many songs to skip - default is 1',
+      type: ApplicationCommandOptionType.Integer,
+      required: false,
+    })
+    count: number = 1,
+    interaction: CommandInteraction,
+    client: Client
+  ): void {
     const validate = this.validateInteraction(interaction, client);
     if (!validate) {
       return;
@@ -442,7 +452,15 @@ export class music {
 
     const { queue } = validate;
 
-    queue.skip();
+    if (count > queue.size) {
+      interaction.reply("Cannot skip!");
+      return;
+    }
+
+    for (let i = 0; i < count; i++) {
+      queue.skip();
+    }
+
     interaction.reply("> skipped current song");
   }
 
