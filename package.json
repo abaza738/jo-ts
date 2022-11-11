@@ -33,7 +33,8 @@
     "build:changelog": "npx @discordx/changelog --root=src",
     "dev": "node --loader ts-node/esm/transpile-only --experimental-json-modules src/main.ts",
     "start": "nodemon --exec node --loader ts-node/esm/transpile-only --experimental-json-modules src/main.ts",
-    "serve": "node --experimental-json-modules build/main.js"
+    "serve": "node --experimental-json-modules build/main.js",
+    "deploy": "rm -r ./build && npm ci && npm run build && (npm run serve > log.log 2> &1 &)"
   },
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
