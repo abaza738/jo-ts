@@ -36,7 +36,18 @@ export abstract class POSCONCommand {
 
     if (!onlineData) {
       handleError(`Could not fetch online POSCON data!`, interaction);
+      return;
     }
+
+    const upcomingAtc = onlineData.upcomingAtc.length ? onlineData.upcomingAtc
+      .slice(0, 5)
+      .map(
+        (uATC) =>
+          `${moment(uATC.start)
+          .utc()
+          .format("Do | HHmm")}z - ${toZuluTime(uATC.end)}: **${uATC.telephony ?? uATC.position}**`
+      )
+      .join("\n") : "No Upcoming ATC!";
 
     const embed = embedFactory({
       title: `POSCON Online Activity`,
@@ -48,33 +59,22 @@ export abstract class POSCONCommand {
       },
     })
       .setThumbnail(constants.POSCON.LOGO)
-      .addFields(
+      .addFields([
         {
           name: "Pilots",
-          value: `${onlineData?.totalPilots ?? 0}`,
+          value: `${onlineData.totalPilots ?? 0}`,
           inline: true,
         },
-        { name: "ATC", value: `${onlineData?.totalAtc ?? 0}`, inline: true },
+        { name: "ATC", value: `${onlineData.totalAtc ?? 0}`, inline: true },
         {
           name: "Upcoming ATC",
-          value:
-            onlineData?.upcomingAtc
-              .slice(0, 5)
-              .map(
-                (uATC) =>
-                  `${moment(uATC.start)
-                    .utc()
-                    .format("Do | HHmm")}z - ${toZuluTime(uATC.end)}: **${
-                    uATC.telephony ?? uATC.position
-                  }**`
-              )
-              .join("\n") ?? "No Upcoming ATC!",
+          value: upcomingAtc,
         },
         {
           name: "Last updated",
-          value: `<t:${moment(onlineData?.lastUpdated).unix()}:R>`,
+          value: `<t:${moment(onlineData.lastUpdated).unix()}:R>`,
         }
-      );
+      ]);
     interaction.followUp({ embeds: [embed] });
   }
 
