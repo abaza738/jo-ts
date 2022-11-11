@@ -1,5 +1,6 @@
 import {
   ApplicationCommandOptionType,
+  AutocompleteInteraction,
   CommandInteraction,
   EmbedBuilder,
   Guild,
@@ -19,6 +20,7 @@ import type { MyQueue } from "../common/music.js";
 import { MyPlayer } from "../common/music.js";
 import { SpotifyManager } from "../common/spotify.js";
 import { embedFactory } from "../common/utils.js";
+import { YouTube } from "../common/youtube.js";
 
 @Discord()
 @SlashGroup({ name: "music", description: "Music commands!" })
@@ -257,6 +259,8 @@ export class music {
     @SlashOption({
       name: "song",
       description: "song name",
+      autocomplete: async (autocomplete: AutocompleteInteraction) =>
+        YouTube.getSearchAutocompleteOptions(autocomplete),
       type: ApplicationCommandOptionType.String,
       required: true
     })

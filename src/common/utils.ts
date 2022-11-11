@@ -62,18 +62,6 @@ export function toZuluTime(time: string): string {
   return `${moment(time).utc().format('HHmm')}Z`;
 }
 
-
-export async function getAutocompleteOptions(interaction: AutocompleteInteraction<import("discord.js").CacheType>): Promise<void> {
-  const focusedOption = interaction.options.getFocused(true);
-  const filteredList: ApplicationCommandOptionChoiceData[] = [];
-  const listOfFlights = await POSCON.online();
-  for (const flight of listOfFlights?.flights!) {
-    if (flight.callsign.toLowerCase().includes((focusedOption.value as string).toLowerCase()))
-      filteredList.push({ name: flight.callsign, value: flight.callsign });
-  }
-  return interaction.respond(filteredList);
-}
-
 export function KHzToMHz(khz: number) {
   return khz ? khz / 1000 : undefined;
 }
