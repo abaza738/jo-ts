@@ -1,3 +1,4 @@
+import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from "discord.js";
 import { POSCONOnline } from "../models/poscon/online";
 import { Api } from "./Api.js"
 import { constants } from "./constants.js";
@@ -28,6 +29,17 @@ export default class POSCON {
       POSCON.cachedOnline = response.data as POSCONOnline;
       return response.data as POSCONOnline;
     }
+  }
+
+  static async getFlightAutocompleteOptions(interaction: AutocompleteInteraction<import("discord.js").CacheType>): Promise<void> {
+    const focusedOption = interaction.options.getFocused(true);
+    const filteredList: ApplicationCommandOptionChoiceData[] = [];
+    const listOfFlights = await POSCON.online();
+    for (const flight of listOfFlights?.flights!) {
+      if (flight.callsign.toLowerCase().includes((focusedOption.value as string).toLowerCase()))
+        filteredList.push({ name: flight.callsign, value: flight.callsign });
+    }
+    return interaction.respond(filteredList);
   }
 
   /**

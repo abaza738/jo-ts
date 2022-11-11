@@ -10,7 +10,6 @@ import POSCON from "../common/POSCON.js";
 import {
   embedFactory,
   flightStatus,
-  getAutocompleteOptions,
   handleError,
   KHzToMHz,
   toZuluTime
@@ -89,7 +88,7 @@ export abstract class POSCONCommand {
       name: "callsign",
       description: "The callsign of the flight (choose from the list)",
       autocomplete: async (autocomplete: AutocompleteInteraction) =>
-        getAutocompleteOptions(autocomplete),
+        POSCON.getFlightAutocompleteOptions(autocomplete),
       type: ApplicationCommandOptionType.String,
       required: true,
     })
