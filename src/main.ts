@@ -3,6 +3,7 @@ import { Koa } from "@discordx/koa";
 import { IntentsBitField, Interaction, Message } from "discord.js";
 import { Client } from "discordx";
 import dotenv from "dotenv";
+import moment from "moment";
 import "reflect-metadata";
 
 dotenv.config();
@@ -32,6 +33,12 @@ client.once("ready", async () => {
   await client.initApplicationCommands({
     guild: { log: true },
     global: { log: true },
+  });
+
+  client.guilds.cache.each(guild => {
+    console.log(`- ${guild.name}`);
+    console.log(`\tJoined ${moment(guild.joinedAt).format('MMM Do, YYYY')}`);
+    console.log(`\t${guild.memberCount} members.`);
   });
 
   // init permissions; enabled log to see changes
