@@ -37,7 +37,7 @@
     "deploy": "rm -r ./build && npm ci && npm run build && (npm run serve > log.log 2> &1 &)"
   },
   "dependencies": {
-    "@discordjs/opus": "^0.8.0",
+    "@discordjs/opus": "^0.9.0",
     "@discordjs/voice": "^0.14.0",
     "@discordx/importer": "^1.1.10",
     "@discordx/koa": "^1.1.2",
