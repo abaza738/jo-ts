@@ -371,22 +371,26 @@ export class music {
         songCount++;
 
         if (last && songCount > 1) {
-          if (playlist) {
-            embed.setTitle(`Playing ${playlist.name}${playlist.owner?.display_name ? ` by ${playlist.owner.display_name}` : ''}.`);
-            embed.setDescription(`Enqueued  **${songCount}** spotify songs`);
+          if (!playlist) {
+            console.error('Nope, no playlist here...');
+            return;
+          }
 
-            if (playlist.images?.length) {
-              embed.setThumbnail(playlist.images[0].url);
-            }
-            embed.setFields({ name: 'URL', value: link, inline: false });
+          embed.setTitle(`Playing ${playlist.name}` + (playlist.subtitle ? ` by ${playlist.subtitle}.` : '.'));
+          embed.setDescription(`Enqueued  **${songCount}** spotify songs`);
 
-            try {
-              await interaction.editReply({ embeds: [embed] });
-            } catch(e) {
-              const alexEmbed = embedFactory({ title: 'Nice try Alex.', description: 'I win.', color: "White" });
-              await interaction.channel?.send({ embeds: [embed] });
-              await interaction.channel?.send({ embeds: [alexEmbed] });
-            }
+          if (playlist.coverArt?.sources?.length) {
+            embed.setThumbnail(playlist.coverArt.sources[0].url);
+          }
+
+          embed.setFields({ name: 'URL', value: link, inline: false });
+
+          try {
+            await interaction.editReply({ embeds: [embed] });
+          } catch(e) {
+            const fixEmbed = embedFactory({ title: 'Don\'t delete that message again.', description: 'Seriously.', color: "White" });
+            await interaction.channel?.send({ embeds: [embed] });
+            await interaction.channel?.send({ embeds: [fixEmbed] });
           }
         }
       });

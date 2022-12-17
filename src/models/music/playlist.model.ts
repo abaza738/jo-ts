@@ -1,41 +1,34 @@
-import { SpotifyTrack } from "./track.model";
+import { CoverArt, SpotifyAudioPreview } from "./track.model";
+
+export type TrackListItem = {
+  uri: string;
+  uid: string;
+  title: string;
+  subtitle: string;
+  isExplicit: boolean;
+  duration: number;
+  isPlayable: boolean;
+  audioPreview: SpotifyAudioPreview;
+};
 
 export type SpotifyPlaylist = {
-  collaborative: boolean;
-  description?: string | null;
-  external_urls: {
-    spotify?: string;
-  };
-  href: string;
+  coverArt: CoverArt;
+  duration: number;
+  hasVideo: boolean;
   id: string;
-  images?: SpotifyImage[];
+  isExplicit: boolean;
+  isPlayable: boolean;
+  maxDuration: number;
   name: string;
-  owner?: SpotifyPlaylistOwner;
-  primary_color?: string | null;
-  public: boolean;
-  snapshot_id?: string;
-  tracks: {
-    href?: string | null;
-    items: [
-      {
-        is_local?: boolean;
-        primary_color?: string | null;
-        track: SpotifyTrack;
-        video_thumbnail?: {
-          url?: string | null;
-        };
-      }
-    ];
-    limit: number;
-    next?: any | null;
-    offset: number;
-    previous: any | null;
-    total: number;
+  releaseDate?: {
+    isoString: string;
   };
+  subtitle: string;
+  title: string;
+  trackList: TrackListItem[];
   type: "playlist";
   uri: string;
-  dominantColor?: string;
-}
+};
 
 export type SpotifyImage = {
   height: number;

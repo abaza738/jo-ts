@@ -224,8 +224,8 @@ export class MyQueue extends Queue {
       console.log(`Music embed message was deleted, sending a new one.`);
       const sentMessage = await this.channel?.send({ embeds: [embed], components: [...this.controlsRow()] });
       this.lastControlMessage = sentMessage;
-      const alexEmbed = embedFactory({ title: 'Alex, stop trying to break me...', description: 'Seriously, I ain\'t got time for this...', color: "White" });
-      await this.channel?.send({ embeds: [alexEmbed] });
+      const fixEmbed = embedFactory({ title: 'Hey, stop trying to break me...', description: 'Seriously, I ain\'t got time for this...', color: "White" });
+      await this.channel?.send({ embeds: [fixEmbed] });
     }
 
     this.lockUpdate = false;

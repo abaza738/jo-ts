@@ -10,17 +10,7 @@ export type SpotifyTrack = {
   id: string;
   title: string;
   artists?: SpotifyArtist[];
-  coverArt: {
-    extractedColors: {
-      colorDark?: {
-        hex: string;
-      };
-      colorLight?: {
-        hex: string;
-      };
-    };
-    sources: SpotifyImage[];
-  };
+  coverArt: CoverArt;
   releaseDate: {
     isoString: string;
   };
@@ -46,6 +36,24 @@ export type SpotifyTrack = {
   track?: boolean;
   track_number?: number;
 }
+
+export type CoverArt = {
+  extractedColors: {
+    colorDark?: {
+      hex: string;
+    };
+    colorLight?: {
+      hex: string;
+    };
+  };
+  sources: Sources[];
+};
+
+export type Sources = {
+  height?: any;
+  width?: any;
+  url: string;
+};
 
 export type SpotifyArtist = {
   name: string;

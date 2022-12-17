@@ -24,7 +24,7 @@ export class SpotifyManager {
   ) {
     let data: SpotifyTrack | SpotifyPlaylist;
     try {
-      data = await getData(url);
+      data = await getData(url);      
     } catch (e) {
       console.log(`Oepsie doepsie! De Spotify link (${url}) is verbroken!`);
       cb({ error: e });
@@ -32,6 +32,7 @@ export class SpotifyManager {
     }
 
     if (!data) {
+      console.error(`ERROR: no data received from Spotify!.`);
       return;
     }
 
@@ -44,13 +45,11 @@ export class SpotifyManager {
       return;
     }
 
-    for (let i = 0; i < data.tracks?.items?.length; i++) {
-      const item = data.tracks?.items[i];
-      const searchQuery = `${item.track.artists?.[0]?.name ?? ""} ${
-        item.track.name ?? ""
-      }`;
+    for (let i = 0; i < data.trackList.length; i++) {
+      const item = data.trackList[i];
+      const searchQuery = `${item.title ?? ""} ${item.subtitle ?? ""}`;
       const song = await getSong(searchQuery);
-      cb({ playlist: data, track: song, last: i === data.tracks?.items.length - 1 });
+      cb({ playlist: data, track: song, last: i === data.trackList.length - 1 });
     }
   }
 }
