@@ -30,10 +30,7 @@ client.once("ready", async () => {
   client.user?.setActivity({ type: 2, name: '128.500 MHz' });
 
   // init all application commands
-  await client.initApplicationCommands({
-    guild: { log: true },
-    global: { log: true },
-  });
+  await client.initApplicationCommands();
 
   client.guilds.cache.each(guild => {
     console.log(`- ${guild.name}`);
@@ -54,7 +51,7 @@ client.once("ready", async () => {
 });
 
 client.on("interactionCreate", (interaction: Interaction) => {
-  client.executeInteraction(interaction, true);
+  client.executeInteraction(interaction);
 });
 
 client.on("messageCreate", (message: Message) => {
