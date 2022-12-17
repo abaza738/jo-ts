@@ -215,6 +215,21 @@ export class music {
     interaction.deleteReply();
   }
 
+  @ButtonComponent({ id: 'btn-loop' })
+  async loopControl(
+    interaction: CommandInteraction,
+    client: Client
+  ): Promise<void> {
+    const queue = this.validateControlInteraction(interaction, client);
+
+    if (!queue) {
+      return;
+    }
+    queue.setLoop(!queue.loop);
+    await interaction.deferReply();
+    interaction.deleteReply();
+  }
+
   async processJoin(
     interaction: CommandInteraction,
     client: Client
