@@ -32,6 +32,7 @@ export abstract class POSCONCommand {
       onlineData = await POSCON.online();
     } catch (err) {
       handleError(err, interaction);
+      return;
     }
 
     if (!onlineData) {
@@ -108,6 +109,7 @@ export abstract class POSCONCommand {
 
     if (!online) {
       handleError(`Could not fetch POSCON online activity!`, interaction);
+      return;
     }
 
     const selectedFlight = online?.flights.find(

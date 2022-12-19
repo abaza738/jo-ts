@@ -18,10 +18,12 @@ export abstract class VATSIM {
       data = await Vatsim.online();
     } catch (e) {
       handleError(e, interaction);
+      return;
     }
 
     if (!data) {
       handleError(`Could not retrieve VATSIM online data!`, interaction);
+      return;
     }
 
     const embed = embedFactory({
