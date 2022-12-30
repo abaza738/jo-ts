@@ -55,7 +55,7 @@
     "libsodium-wrappers": "^0.7.10",
     "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13",
-    "spotify-url-info": "^3.1.9",
+    "spotify-url-info": "^3.2.3",
     "ytsr": "^3.8.0"
   },
   "devDependencies": {
