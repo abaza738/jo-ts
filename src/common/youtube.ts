@@ -30,7 +30,14 @@ export class YouTube {
     const listOfVideos = result.items.filter(item => item.type === 'video') as Video[];
     
     for (const song of listOfVideos) {
-      filteredList.push({ name: song.title, value: song.url });
+      let name = `[${song.duration ?? '--:--'}] ${song.title}`;
+      if (name.length >= 100) {
+        name = name.slice(0, 96) + '...';
+      }
+      filteredList.push({
+        name: name,
+        value: song.url
+      });
     }
     
     return interaction.respond(filteredList);
