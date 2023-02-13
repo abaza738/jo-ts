@@ -1,12 +1,15 @@
 import { dirname, importx } from "@discordx/importer";
 import { Koa } from "@discordx/koa";
+import { YTDLPlayerPlugin } from "@discordx/plugin-ytdl-player";
 import { IntentsBitField, Interaction, Message } from "discord.js";
-import { Client } from "discordx";
+import { Client, MetadataStorage } from "discordx";
 import dotenv from "dotenv";
 import moment from "moment";
 import "reflect-metadata";
 
 dotenv.config();
+
+const ytdlPlugin = new YTDLPlayerPlugin({ metadata: MetadataStorage.instance });
 
 export const client = new Client({
   simpleCommand: {
@@ -21,6 +24,7 @@ export const client = new Client({
   ],
   // If you only want to use global commands only, comment this line
   // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
+  plugins: [ytdlPlugin],
 });
 
 
@@ -38,24 +42,11 @@ client.once("ready", async () => {
     console.log(`\t${guild.memberCount} members.`);
   });
 
-  // init permissions; enabled log to see changes
-  // await client.initApplicationPermissions(true);
-
-  // uncomment this line to clear all guild commands,
-  // useful when moving to global commands from guild commands
-  //  await client.clearApplicationCommands(
-  //    ...client.guilds.cache.map((g) => g.id)
-  //  );
-
   console.log("Bot started");
 });
 
 client.on("interactionCreate", (interaction: Interaction) => {
   client.executeInteraction(interaction);
-});
-
-client.on("messageCreate", (message: Message) => {
-  client.executeCommand(message, { forcePrefixCheck: true, log: true });
 });
 
 async function run() {
