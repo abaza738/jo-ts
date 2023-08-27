@@ -10,13 +10,17 @@
     "build:changelog": "npx @discordx/changelog --src src",
     "dev": "ts-node-esm src/main.ts",
     "start": "node build/main.js",
-    "watch": "nodemon --exec ts-node-esm src/main.ts"
+    "watch": "nodemon --exec ts-node-esm src/main.ts",
+    "check": "npx npm-check-updates",
+    "update": "npx npm-check-updates -u"
   },
   "dependencies": {
     "@discordx/importer": "^1.2.2",
     "@discordx/pagination": "^3.4.1",
+    "@discordx/plugin-ytdl-player": "^2.0.3",
     "discord.js": "^14.11.0",
-    "discordx": "^11.7.6"
+    "discordx": "^11.7.6",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

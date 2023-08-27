@@ -1,7 +1,15 @@
 import { dirname, importx } from "@discordx/importer";
 import type { Interaction, Message } from "discord.js";
 import { IntentsBitField } from "discord.js";
-import { Client } from "discordx";
+import { Client, MetadataStorage } from "discordx";
+import dotenv from "dotenv";
+import { YTDLPlayerPlugin } from "@discordx/plugin-ytdl-player";
+
+dotenv.config();
+
+
+// Initialize the Plugin:
+const ytdlPlugin = new YTDLPlayerPlugin({ metadata: MetadataStorage.instance });
 
 export const bot = new Client({
   // To use only guild command
@@ -24,6 +32,10 @@ export const bot = new Client({
   simpleCommand: {
     prefix: "!",
   },
+
+  plugins: [
+    ytdlPlugin,
+  ]
 });
 
 bot.once("ready", async () => {
